@@ -14,7 +14,12 @@ The NimbusPulse SDK provides developers with a set of tools and interfaces to in
 | Language     | Status                             |
 |--------------|------------------------------------|
 | JavaScript   | WIP (with TypeScript support)      |
-| Rust         | WIP                                |
+| Rust         | Minimal                            |
+
+## Support Level Definitions
+ - Minimal   : Basic functionality is operational (Create, Start, Stop, Delete)
+ - Functional: Core features are complete with additional settings and customizations available.
+ - Complete  : All features are fully implemented, including advanced functionality like runtime with live player count, chat, and more.
 
 > **Note:** As of now, both JavaScript (with TypeScript support) and Rust versions of the SDK are under active development. Future versions will include more language support and fully stable SDKs. Do you have a language we currently don't cover? Open a [issue](https://github.com/NimbusPulse/sdk/issues) or join our [discord](https://nimbuspulse.com/discord) to chat.
 
