@@ -1,9 +1,11 @@
 use serde::{Deserialize, Serialize};
+use ts_rs::TS;
 use uuid::Uuid;
 
 use super::dcs_settings::DcsSettings;
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Clone, TS)]
+#[ts(export, export_to = "../../javascript/lib/types/")]
 pub struct NodeGame {
     pub id: Uuid,
     pub node_id: Uuid,
@@ -24,7 +26,8 @@ pub struct NodeGame {
     pub dcs_settings: Option<DcsSettings>,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, TS)]
+#[ts(export, export_to = "../../javascript/lib/types/")]
 pub enum Terrain {
     Caucasus,
     Falklands,
@@ -38,7 +41,8 @@ pub enum Terrain {
     TheChannel,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, TS)]
+#[ts(export, export_to = "../../javascript/lib/types/")]
 pub enum NodeGameStatus {
     InstallingBaseGame {
         progress: Option<u8>,

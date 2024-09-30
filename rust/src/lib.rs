@@ -1,11 +1,13 @@
 use anyhow::{bail, Ok, Result};
 use serde::Serialize;
+use ts_rs::TS;
 use types::node_game::{NodeGame, Terrain};
 use uuid::Uuid;
 
 mod types;
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, TS)]
+#[ts(export, export_to = "../../javascript/lib/types/")]
 pub struct CreateServerRequest {
     // Stupid? Yes. Will be removed? Yes. Now? No. After beta and before release? Yes.
     pub user_id: String,
@@ -16,7 +18,8 @@ pub struct CreateServerRequest {
     pub wanted_terrains: Vec<Terrain>,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, TS)]
+#[ts(export, export_to = "../../javascript/lib/types/")]
 pub struct DcsSettingsPayload {
     pub server_name: String,
     pub server_password: String,
@@ -26,7 +29,8 @@ pub struct DcsSettingsPayload {
     pub use_voice_chat: bool,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, TS)]
+#[ts(export, export_to = "../../javascript/lib/types/")]
 pub struct DcsCredentials {
     pub username: String,
     pub password: String,

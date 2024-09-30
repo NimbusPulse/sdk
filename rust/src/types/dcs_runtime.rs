@@ -1,8 +1,10 @@
 use std::collections::HashMap;
 
 use serde::Deserialize;
+use ts_rs::TS;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, TS)]
+#[ts(export, export_to = "../../javascript/lib/types/")]
 pub struct DcsRuntime {
     pub paused: bool,
     pub mission_info: Option<MissionInfo>,
@@ -11,7 +13,8 @@ pub struct DcsRuntime {
     pub settings: Option<ServerSettings>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, TS)]
+#[ts(export, export_to = "../../javascript/lib/types/")]
 pub struct MissionInfo {
     result_red: Option<i32>,
     result_blue: Option<i32>,
@@ -21,7 +24,8 @@ pub struct MissionInfo {
     mission_description: String,
 }
 
-#[derive(Deserialize, Debug, Default)]
+#[derive(Deserialize, Debug, Default, TS)]
+#[ts(export, export_to = "../../javascript/lib/types/")]
 
 pub struct MissionList {
     pub mission_list: Vec<String>,
@@ -31,19 +35,22 @@ pub struct MissionList {
     pub list_loop: bool,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, TS)]
+#[ts(export, export_to = "../../javascript/lib/types/")]
 pub struct PlayersResponse {
     pub players: Players,
     pub server_id: i32,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, TS)]
+#[ts(export, export_to = "../../javascript/lib/types/")]
 pub struct Players {
     pub banned: HashMap<String, Player>,
     pub all: HashMap<String, Player>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, TS)]
+#[ts(export, export_to = "../../javascript/lib/types/")]
 pub struct Player {
     pub ping: i32,
     pub side: i32,
@@ -57,14 +64,16 @@ pub struct Player {
     pub ipaddr: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, TS)]
+#[ts(export, export_to = "../../javascript/lib/types/")]
 pub struct ServerSettings {
     pub mission_list: MissionList,
     pub settings: Settings,
     pub ip: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, TS)]
+#[ts(export, export_to = "../../javascript/lib/types/")]
 pub struct Settings {
     pub description: String,
     pub require_pure_textures: bool,
@@ -85,7 +94,8 @@ pub struct Settings {
     pub max_players: i32,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, TS)]
+#[ts(export, export_to = "../../javascript/lib/types/")]
 pub struct AdvancedSettings {
     pub allow_change_tailno: bool,
     pub disable_events: bool,

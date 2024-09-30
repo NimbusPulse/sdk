@@ -1,6 +1,8 @@
+use ts_rs::TS;
 use uuid::Uuid;
 
-#[derive(Debug)]
+#[derive(Debug, TS)]
+#[ts(export, export_to = "../../javascript/lib/types/")]
 pub struct Node {
     pub id: Uuid,
     pub name: String,
