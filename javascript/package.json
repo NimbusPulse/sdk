@@ -1,0 +1,23 @@
+{
+  "name": "@nimbuspulse/client",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx src/main.ts",
+    "build": "vite build"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^22.7",
+    "tsx": "4.19",
+    "typescript": "^5.6",
+    "vite": "5.4"
+  },
+  "dependencies": {
+    "basic-ftp": "5.0"
+  }
+}
