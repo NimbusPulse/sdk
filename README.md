@@ -13,7 +13,7 @@ The NimbusPulse SDK provides developers with a set of tools and interfaces to in
 
 | Language     | Status                             |
 |--------------|------------------------------------|
-| JavaScript   | WIP (with TypeScript support)      |
+| JavaScript   | Minimal                            |
 | Rust         | Minimal                            |
 
 ## Support Level Definitions

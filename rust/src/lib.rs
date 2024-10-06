@@ -1,22 +1,22 @@
 use anyhow::{bail, Ok, Result};
 use serde::Serialize;
+use ts_rs::TS;
 use types::node_game::{NodeGame, Terrain};
 use uuid::Uuid;
 
 mod types;
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, TS)]
+#[ts(export, export_to = "../../javascript/lib/types/")]
 pub struct CreateServerRequest {
-    // Stupid? Yes. Will be removed? Yes. Now? No. After beta and before release? Yes.
-    pub user_id: String,
+    pub product_id: Uuid,
     pub settings: DcsSettingsPayload,
-    // Not used at all and will never be, don't even think this is a security risk
-    pub minio_password: String,
     pub active_mods: Vec<String>,
     pub wanted_terrains: Vec<Terrain>,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, TS)]
+#[ts(export, export_to = "../../javascript/lib/types/")]
 pub struct DcsSettingsPayload {
     pub server_name: String,
     pub server_password: String,
@@ -26,7 +26,8 @@ pub struct DcsSettingsPayload {
     pub use_voice_chat: bool,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, TS)]
+#[ts(export, export_to = "../../javascript/lib/types/")]
 pub struct DcsCredentials {
     pub username: String,
     pub password: String,
@@ -35,7 +36,6 @@ pub struct DcsCredentials {
 #[derive(Debug, Clone)]
 pub struct Client {
     api_key: String,
-    user_id: Uuid,
     reqwest_client: reqwest::Client,
 }
 
@@ -46,8 +46,6 @@ impl Client {
         Self {
             reqwest_client: reqwest::Client::new(),
             api_key: api_key.into(),
-            // TODO(timm): Yes, this is my user ID. No, it's not a security risk. Yes, it will be removed.
-            user_id: Uuid::parse_str("0191fb3a-ba96-7341-9e20-f770b8f36b7c").unwrap(),
         }
     }
 
@@ -67,7 +65,7 @@ impl Client {
         use_voice_chat: bool,
     ) -> Result<NodeGame> {
         let payload = CreateServerRequest {
-            user_id: self.user_id.to_string(),
+            product_id: plan,
             settings: DcsSettingsPayload {
                 server_name: name.into(),
                 server_password: password.map(|p| p.into()).unwrap_or_default(),
@@ -76,7 +74,6 @@ impl Client {
                 credentials,
                 use_voice_chat,
             },
-            minio_password: String::new(),
             active_mods: active_mods.into_iter().map(|m| m.into()).collect(),
             wanted_terrains: terrains,
         };
