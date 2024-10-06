@@ -10,6 +10,7 @@ pub struct NodeGame {
     pub id: Uuid,
     pub node_id: Uuid,
     pub user_id: String,
+    pub product_id: Uuid,
     pub ip: String,
     pub port: u32,
     pub webgui_port: u32,
@@ -57,11 +58,21 @@ pub enum NodeGameStatus {
     ServerStarted,
     ServerStopped {
         was_error: bool,
-        reason: String,
+        reason: ServerStoppedReason,
     },
     ServerExpired,
     ServerDeleted,
-    WantServerStarted,
+    WantServerStarted {
+        current_try: u32,
+    },
     WantServerStopped,
     WantUpdateServer,
+}
+
+#[derive(Debug, Clone, Deserialize, TS)]
+#[ts(export, export_to = "../../javascript/lib/types/")]
+pub enum ServerStoppedReason {
+    StoppedNormally,
+    StoppedUnexpectedly,
+    MaxTriesReached,
 }
