@@ -6,7 +6,7 @@ use super::dcs_settings::DcsSettings;
 
 #[derive(Debug, Deserialize, Clone, TS)]
 #[ts(export, export_to = "../../javascript/lib/types/")]
-pub struct NodeGame {
+pub struct Instance {
     pub id: Uuid,
     pub node_id: Uuid,
     pub user_id: String,
@@ -18,7 +18,7 @@ pub struct NodeGame {
     pub ftp_username: String,
     pub ftp_password: String,
     pub pid: Option<u32>,
-    pub status: NodeGameStatus,
+    pub status: InstanceStatus,
     pub want_delete: bool,
     pub wanted_terrains: Vec<Terrain>,
     pub rented_at: u64,
@@ -44,7 +44,7 @@ pub enum Terrain {
 
 #[derive(Debug, Clone, Deserialize, TS)]
 #[ts(export, export_to = "../../javascript/lib/types/")]
-pub enum NodeGameStatus {
+pub enum InstanceStatus {
     InstallingBaseGame {
         progress: Option<u8>,
     },
@@ -58,20 +58,22 @@ pub enum NodeGameStatus {
     ServerStarted,
     ServerStopped {
         was_error: bool,
-        reason: ServerStoppedReason,
+        reason: InstanceStoppedReason,
     },
     ServerExpired,
     ServerDeleted,
     WantServerStarted {
         current_try: u32,
     },
-    WantServerStopped,
+    WantServerStopped {
+        error_passthrough: Option<(bool, InstanceStoppedReason)>,
+    },
     WantUpdateServer,
 }
 
-#[derive(Debug, Clone, Deserialize, TS)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, TS)]
 #[ts(export, export_to = "../../javascript/lib/types/")]
-pub enum ServerStoppedReason {
+pub enum InstanceStoppedReason {
     StoppedNormally,
     StoppedUnexpectedly,
     MaxTriesReached,

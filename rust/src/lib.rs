@@ -1,14 +1,16 @@
 use anyhow::{bail, Ok, Result};
 use serde::Serialize;
 use ts_rs::TS;
-use types::node_game::{NodeGame, Terrain};
+use types::dcs_runtime::DcsRuntime;
+pub use types::instance::{Instance, InstanceStatus, Terrain};
 use uuid::Uuid;
 
 mod types;
 
 #[derive(Debug, Serialize, TS)]
 #[ts(export, export_to = "../../javascript/lib/types/")]
-pub struct CreateServerRequest {
+pub struct CreateInstanceRequest {
+    pub user_id: String,
     pub product_id: Uuid,
     pub settings: DcsSettingsPayload,
     pub active_mods: Vec<String>,
@@ -18,12 +20,12 @@ pub struct CreateServerRequest {
 #[derive(Debug, Serialize, TS)]
 #[ts(export, export_to = "../../javascript/lib/types/")]
 pub struct DcsSettingsPayload {
-    pub server_name: String,
-    pub server_password: String,
-    pub max_players: u32,
+    pub initial_server_name: String,
+    pub initial_server_password: String,
+    pub initial_max_players: u32,
     pub use_own_credentials: bool,
     pub credentials: Option<DcsCredentials>,
-    pub use_voice_chat: bool,
+    pub initial_use_voice_chat: bool,
 }
 
 #[derive(Debug, Serialize, TS)]
@@ -63,16 +65,17 @@ impl Client {
         terrains: Vec<Terrain>,
         credentials: Option<DcsCredentials>,
         use_voice_chat: bool,
-    ) -> Result<NodeGame> {
-        let payload = CreateServerRequest {
+    ) -> Result<Instance> {
+        let payload = CreateInstanceRequest {
+            user_id: "".to_string(),
             product_id: plan,
             settings: DcsSettingsPayload {
-                server_name: name.into(),
-                server_password: password.map(|p| p.into()).unwrap_or_default(),
-                max_players,
+                initial_server_name: name.into(),
+                initial_server_password: password.map(|p| p.into()).unwrap_or_default(),
+                initial_max_players: max_players,
                 use_own_credentials: credentials.is_some(),
                 credentials,
-                use_voice_chat,
+                initial_use_voice_chat: use_voice_chat,
             },
             active_mods: active_mods.into_iter().map(|m| m.into()).collect(),
             wanted_terrains: terrains,
@@ -87,13 +90,31 @@ impl Client {
             .await?;
 
         if !response.status().is_success() {
-            bail!(format!("Failed to create server: {:?}", response));
+            bail!(format!(
+                "Failed to create server: {:?}",
+                response.text().await?
+            ));
         }
 
-        Ok(response.json::<NodeGame>().await?)
+        Ok(response.json::<Instance>().await?)
     }
 
-    pub async fn get_servers(&self) -> Result<Vec<NodeGame>> {
+    pub async fn get_runtime(&self, id: &Uuid) -> Result<DcsRuntime> {
+        let response = self
+            .reqwest_client
+            .get(format!("{}/game_servers/{}/runtime", Self::BASE_URL, id))
+            .bearer_auth(self.api_key.clone())
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            bail!(format!("Failed to get runtime: {:?}", response));
+        }
+
+        Ok(response.json::<DcsRuntime>().await?)
+    }
+
+    pub async fn get_servers(&self) -> Result<Vec<Instance>> {
         let response = self
             .reqwest_client
             .get(format!("{}/game_servers", Self::BASE_URL))
@@ -105,7 +126,7 @@ impl Client {
             bail!(format!("Failed to create server: {:?}", response));
         }
 
-        Ok(response.json::<Vec<NodeGame>>().await?)
+        Ok(response.json::<Vec<Instance>>().await?)
     }
 
     pub async fn start_server(&self, id: &Uuid) -> Result<()> {

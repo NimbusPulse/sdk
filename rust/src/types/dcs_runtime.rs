@@ -28,10 +28,21 @@ pub struct MissionInfo {
 #[ts(export, export_to = "../../javascript/lib/types/")]
 
 pub struct MissionList {
+    #[serde(
+        rename = "missionList",
+        deserialize_with = "super::deserialize_mission_field"
+    )]
     pub mission_list: Vec<String>,
+    #[serde(
+        rename = "missionTheatres",
+        deserialize_with = "super::deserialize_mission_field"
+    )]
     pub mission_theatres: Vec<String>,
+    #[serde(rename = "listStartIndex")]
     pub list_start_index: i32,
+    #[serde(rename = "listShuffle")]
     pub list_shuffle: bool,
+    #[serde(rename = "listLoop")]
     pub list_loop: bool,
 }
 
@@ -45,8 +56,20 @@ pub struct PlayersResponse {
 #[derive(Debug, Deserialize, TS)]
 #[ts(export, export_to = "../../javascript/lib/types/")]
 pub struct Players {
-    pub banned: HashMap<String, Player>,
+    #[serde(deserialize_with = "super::deserialize_array_object")]
+    pub banned: Vec<BannedPlayer>,
     pub all: HashMap<String, Player>,
+}
+
+#[derive(Debug, Deserialize, TS)]
+#[ts(export, export_to = "../../javascript/lib/types/")]
+pub struct BannedPlayer {
+    pub banned_from: i64,
+    pub banned_until: i64,
+    pub ipaddr: String,
+    pub name: String,
+    pub reason: String,
+    pub ucid: String,
 }
 
 #[derive(Debug, Deserialize, TS)]
@@ -77,20 +100,29 @@ pub struct ServerSettings {
 pub struct Settings {
     pub description: String,
     pub require_pure_textures: bool,
+    #[serde(rename = "listStartIndex")]
     pub list_start_index: i32,
     pub advanced: AdvancedSettings,
     pub port: i32,
     pub mode: i32,
     pub bind_address: String,
+    #[serde(rename = "isPublic")]
     pub is_public: bool,
+    #[serde(rename = "listShuffle")]
     pub list_shuffle: bool,
     pub password: String,
+    #[serde(rename = "listLoop")]
     pub list_loop: bool,
     pub name: String,
     pub require_pure_scripts: bool,
+    #[serde(
+        rename = "missionList",
+        deserialize_with = "super::deserialize_mission_field"
+    )]
     pub mission_list: Vec<String>,
     pub require_pure_clients: bool,
     pub require_pure_models: bool,
+    #[serde(rename = "maxPlayers")]
     pub max_players: i32,
 }
 
@@ -103,6 +135,7 @@ pub struct AdvancedSettings {
     pub allow_object_export: bool,
     pub pause_on_load: bool,
     pub allow_sensor_export: bool,
+    #[serde(rename = "event_Takeoff")]
     pub event_takeoff: bool,
     pub pause_without_clients: bool,
     pub client_outbound_limit: i32,
@@ -111,13 +144,27 @@ pub struct AdvancedSettings {
     pub allow_players_pool: bool,
     pub voice_chat_server: bool,
     pub allow_change_skin: bool,
+    #[serde(rename = "event_Connect")]
     pub event_connect: bool,
+    #[serde(rename = "event_Ejecting")]
     pub event_ejecting: bool,
+    #[serde(rename = "event_Kill")]
     pub event_kill: bool,
+    #[serde(rename = "event_Crash")]
     pub event_crash: bool,
+    #[serde(rename = "event_Role")]
     pub event_role: bool,
     pub resume_mode: i32,
+    #[serde(rename = "maxPing")]
     pub max_ping: i32,
     pub allow_trial_only_clients: bool,
     pub allow_dynamic_radio: bool,
+    #[serde(rename = "redPasswordHash")]
+    pub red_password_hash: Option<String>,
+    #[serde(rename = "bluePasswordHash")]
+    pub blue_password_hash: Option<String>,
+    #[serde(rename = "redPassword")]
+    pub red_password: Option<String>,
+    #[serde(rename = "bluePassword")]
+    pub blue_password: Option<String>,
 }
