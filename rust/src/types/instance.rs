@@ -31,6 +31,7 @@ pub struct Instance {
 #[cfg_attr(test, derive(ts_rs::TS))]
 #[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub enum Terrain {
+    Afghanistan,
     Caucasus,
     Falklands,
     Kola,
