@@ -1,11 +1,11 @@
 use serde::{Deserialize, Serialize};
-use ts_rs::TS;
 use uuid::Uuid;
 
 use super::dcs_settings::DcsSettings;
 
-#[derive(Debug, Deserialize, Clone, TS)]
-#[ts(export, export_to = "../../javascript/lib/types/")]
+#[derive(Debug, Deserialize, Clone)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct Instance {
     pub id: Uuid,
     pub node_id: Uuid,
@@ -27,8 +27,9 @@ pub struct Instance {
     pub dcs_settings: Option<DcsSettings>,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, TS)]
-#[ts(export, export_to = "../../javascript/lib/types/")]
+#[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub enum Terrain {
     Caucasus,
     Falklands,
@@ -42,8 +43,9 @@ pub enum Terrain {
     TheChannel,
 }
 
-#[derive(Debug, Clone, Deserialize, TS)]
-#[ts(export, export_to = "../../javascript/lib/types/")]
+#[derive(Debug, Deserialize, Clone)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub enum InstanceStatus {
     InstallingBaseGame {
         progress: Option<u8>,
@@ -71,8 +73,9 @@ pub enum InstanceStatus {
     WantUpdateServer,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, TS)]
-#[ts(export, export_to = "../../javascript/lib/types/")]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub enum InstanceStoppedReason {
     StoppedNormally,
     StoppedUnexpectedly,

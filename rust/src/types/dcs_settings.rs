@@ -1,8 +1,8 @@
 use serde::Deserialize;
-use ts_rs::TS;
 
-#[derive(Debug, Clone, Deserialize, TS)]
-#[ts(export, export_to = "../../javascript/lib/types/")]
+#[derive(Debug, Deserialize, Clone)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct DcsSettings {
     pub initial_server_name: String,
     pub initial_server_password: String,

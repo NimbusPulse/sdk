@@ -1,14 +1,14 @@
 use anyhow::{bail, Ok, Result};
 use serde::Serialize;
-use ts_rs::TS;
 use types::dcs_runtime::DcsRuntime;
 pub use types::instance::{Instance, InstanceStatus, Terrain};
 use uuid::Uuid;
 
 mod types;
 
-#[derive(Debug, Serialize, TS)]
-#[ts(export, export_to = "../../javascript/lib/types/")]
+#[derive(Debug, Serialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct CreateInstanceRequest {
     pub user_id: String,
     pub product_id: Uuid,
@@ -17,8 +17,9 @@ pub struct CreateInstanceRequest {
     pub wanted_terrains: Vec<Terrain>,
 }
 
-#[derive(Debug, Serialize, TS)]
-#[ts(export, export_to = "../../javascript/lib/types/")]
+#[derive(Debug, Serialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct DcsSettingsPayload {
     pub initial_server_name: String,
     pub initial_server_password: String,
@@ -28,8 +29,9 @@ pub struct DcsSettingsPayload {
     pub initial_use_voice_chat: bool,
 }
 
-#[derive(Debug, Serialize, TS)]
-#[ts(export, export_to = "../../javascript/lib/types/")]
+#[derive(Debug, Serialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct DcsCredentials {
     pub username: String,
     pub password: String,

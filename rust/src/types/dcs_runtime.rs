@@ -1,10 +1,10 @@
 use std::collections::HashMap;
 
 use serde::Deserialize;
-use ts_rs::TS;
 
-#[derive(Debug, Deserialize, TS)]
-#[ts(export, export_to = "../../javascript/lib/types/")]
+#[derive(Debug, Deserialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct DcsRuntime {
     pub paused: bool,
     pub mission_info: Option<MissionInfo>,
@@ -13,8 +13,9 @@ pub struct DcsRuntime {
     pub settings: Option<ServerSettings>,
 }
 
-#[derive(Deserialize, Debug, TS)]
-#[ts(export, export_to = "../../javascript/lib/types/")]
+#[derive(Debug, Deserialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct MissionInfo {
     result_red: Option<i32>,
     result_blue: Option<i32>,
@@ -24,9 +25,9 @@ pub struct MissionInfo {
     mission_description: String,
 }
 
-#[derive(Deserialize, Debug, Default, TS)]
-#[ts(export, export_to = "../../javascript/lib/types/")]
-
+#[derive(Debug, Deserialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct MissionList {
     #[serde(
         rename = "missionList",
@@ -46,23 +47,26 @@ pub struct MissionList {
     pub list_loop: bool,
 }
 
-#[derive(Debug, Deserialize, TS)]
-#[ts(export, export_to = "../../javascript/lib/types/")]
+#[derive(Debug, Deserialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct PlayersResponse {
     pub players: Players,
     pub server_id: i32,
 }
 
-#[derive(Debug, Deserialize, TS)]
-#[ts(export, export_to = "../../javascript/lib/types/")]
+#[derive(Debug, Deserialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct Players {
     #[serde(deserialize_with = "super::deserialize_array_object")]
     pub banned: Vec<BannedPlayer>,
     pub all: HashMap<String, Player>,
 }
 
-#[derive(Debug, Deserialize, TS)]
-#[ts(export, export_to = "../../javascript/lib/types/")]
+#[derive(Debug, Deserialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct BannedPlayer {
     pub banned_from: i64,
     pub banned_until: i64,
@@ -72,8 +76,9 @@ pub struct BannedPlayer {
     pub ucid: String,
 }
 
-#[derive(Debug, Deserialize, TS)]
-#[ts(export, export_to = "../../javascript/lib/types/")]
+#[derive(Debug, Deserialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct Player {
     pub ping: i32,
     pub side: i32,
@@ -87,16 +92,18 @@ pub struct Player {
     pub ipaddr: String,
 }
 
-#[derive(Debug, Deserialize, TS)]
-#[ts(export, export_to = "../../javascript/lib/types/")]
+#[derive(Debug, Deserialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct ServerSettings {
     pub mission_list: MissionList,
     pub settings: Settings,
     pub ip: String,
 }
 
-#[derive(Debug, Deserialize, TS)]
-#[ts(export, export_to = "../../javascript/lib/types/")]
+#[derive(Debug, Deserialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct Settings {
     pub description: String,
     pub require_pure_textures: bool,
@@ -126,8 +133,9 @@ pub struct Settings {
     pub max_players: i32,
 }
 
-#[derive(Debug, Deserialize, TS)]
-#[ts(export, export_to = "../../javascript/lib/types/")]
+#[derive(Debug, Deserialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct AdvancedSettings {
     pub allow_change_tailno: bool,
     pub disable_events: bool,

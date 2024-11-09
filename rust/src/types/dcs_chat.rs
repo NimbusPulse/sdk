@@ -1,8 +1,8 @@
-use serde::{Deserialize, Serialize};
-use ts_rs::TS;
+use serde::Deserialize;
 
-#[derive(Debug, Serialize, Deserialize, TS)]
-#[ts(export, export_to = "../../javascript/lib/types/")]
+#[derive(Debug, Deserialize)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct DcsChatSafe {
     pub id: u32,
     pub player_id: i32,

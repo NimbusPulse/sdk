@@ -1,8 +1,9 @@
-use ts_rs::TS;
+use serde::Deserialize;
 use uuid::Uuid;
 
-#[derive(Debug, TS)]
-#[ts(export, export_to = "../../javascript/lib/types/")]
+#[derive(Debug, Deserialize, Clone)]
+#[cfg_attr(test, derive(ts_rs::TS))]
+#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct Node {
     pub id: Uuid,
     pub name: String,
