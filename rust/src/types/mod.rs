@@ -6,6 +6,7 @@ pub mod dcs_runtime;
 pub mod dcs_settings;
 pub mod instance;
 pub mod node;
+pub mod system_resources;
 
 fn deserialize_array_object<'de, D, T>(deserializer: D) -> Result<Vec<T>, D::Error>
 where

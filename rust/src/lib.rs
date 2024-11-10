@@ -1,7 +1,7 @@
 use anyhow::{bail, Ok, Result};
 use serde::Serialize;
-use types::dcs_runtime::DcsRuntime;
 pub use types::instance::{Instance, InstanceStatus, Terrain};
+use types::{dcs_runtime::DcsRuntime, system_resources::ServerResources};
 use uuid::Uuid;
 
 mod types;
@@ -116,6 +116,21 @@ impl Client {
         Ok(response.json::<DcsRuntime>().await?)
     }
 
+    pub async fn get_server_resources(&self, id: &Uuid) -> Result<ServerResources> {
+        let response = self
+            .reqwest_client
+            .get(format!("{}/game_servers/{}/resources", Self::BASE_URL, id))
+            .bearer_auth(self.api_key.clone())
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            bail!(format!("Failed to get server resources: {:?}", response));
+        }
+
+        Ok(response.json::<ServerResources>().await?)
+    }
+
     pub async fn add_missions(&self, id: &Uuid, missions: Vec<String>) -> Result<()> {
         let response = self
             .reqwest_client
@@ -196,6 +211,44 @@ impl Client {
 
         if !response.status().is_success() {
             bail!(format!("Failed to stop server: {:?}", response));
+        }
+
+        Ok(())
+    }
+
+    pub async fn resume_server(&self, id: &Uuid) -> Result<()> {
+        let response = self
+            .reqwest_client
+            .post(format!(
+                "{}/game_servers/{}/dcs-api/resume",
+                Self::BASE_URL,
+                id
+            ))
+            .bearer_auth(self.api_key.clone())
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            bail!("Failed to resume server: {:?}", response);
+        }
+
+        Ok(())
+    }
+
+    pub async fn pause_server(&self, id: &Uuid) -> Result<()> {
+        let response = self
+            .reqwest_client
+            .post(format!(
+                "{}/game_servers/{}/dcs-api/pause",
+                Self::BASE_URL,
+                id
+            ))
+            .bearer_auth(self.api_key.clone())
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            bail!("Failed to pause server: {:?}", response);
         }
 
         Ok(())
