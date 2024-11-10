@@ -116,6 +116,46 @@ impl Client {
         Ok(response.json::<DcsRuntime>().await?)
     }
 
+    pub async fn add_missions(&self, id: &Uuid, missions: Vec<String>) -> Result<()> {
+        let response = self
+            .reqwest_client
+            .post(format!(
+                "{}/game_servers/{}/dcs-api/missions",
+                Self::BASE_URL,
+                id
+            ))
+            .bearer_auth(self.api_key.clone())
+            .json(&missions)
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            bail!("Failed to add missions: {:?}", response.text().await?);
+        }
+
+        Ok(())
+    }
+
+    pub async fn start_mission(&self, id: &Uuid, mission_idx: u32) -> Result<()> {
+        let response = self
+            .reqwest_client
+            .post(format!(
+                "{}/game_servers/{}/dcs-api/missions/{}/start",
+                Self::BASE_URL,
+                id,
+                mission_idx
+            ))
+            .bearer_auth(self.api_key.clone())
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            bail!("Failed to start mission: {:?}", response);
+        }
+
+        Ok(())
+    }
+
     pub async fn get_servers(&self) -> Result<Vec<Instance>> {
         let response = self
             .reqwest_client
