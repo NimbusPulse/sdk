@@ -17,12 +17,12 @@ pub struct DcsRuntime {
 #[cfg_attr(test, derive(ts_rs::TS))]
 #[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct MissionInfo {
-    result_red: Option<i32>,
-    result_blue: Option<i32>,
-    mission_filename: String,
-    mission_time: f32,
-    mission_name: String,
-    mission_description: String,
+    pub result_red: Option<i32>,
+    pub result_blue: Option<i32>,
+    pub mission_filename: String,
+    pub mission_time: f32,
+    pub mission_name: String,
+    pub mission_description: String,
 }
 
 #[derive(Debug, Deserialize)]
