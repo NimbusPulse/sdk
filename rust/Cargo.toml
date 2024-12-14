@@ -6,7 +6,7 @@ repository = "https://github.com/NimbusPulse/sdk"
 license = "MIT"
 readme = "../README.md"
 keywords = ["dcs", "dcs-world", "nimbuspulse", "sdk", "api"]
-version = "0.1.4"
+version = "0.1.5"
 edition = "2021"
 
 [[bin]]
