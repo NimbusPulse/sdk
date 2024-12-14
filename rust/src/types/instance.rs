@@ -34,6 +34,7 @@ pub enum Terrain {
     Afghanistan,
     Caucasus,
     Falklands,
+    Iraq,
     Kola,
     MarianaIslands,
     Nevada,
