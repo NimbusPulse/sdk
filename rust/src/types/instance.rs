@@ -22,6 +22,7 @@ pub struct Instance {
     pub want_delete: bool,
     pub wanted_terrains: Vec<Terrain>,
     pub rented_at: u64,
+    pub rented_until: Option<u32>,
     pub active_mods: Vec<String>,
     pub created_at: String,
     pub dcs_settings: Option<DcsSettings>,
