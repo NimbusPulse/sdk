@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use serde::Deserialize;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[cfg_attr(test, derive(ts_rs::TS))]
 #[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct DcsRuntime {
@@ -13,7 +13,7 @@ pub struct DcsRuntime {
     pub settings: Option<ServerSettings>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[cfg_attr(test, derive(ts_rs::TS))]
 #[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct MissionInfo {
@@ -25,7 +25,7 @@ pub struct MissionInfo {
     pub mission_description: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[cfg_attr(test, derive(ts_rs::TS))]
 #[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct MissionList {
@@ -47,7 +47,7 @@ pub struct MissionList {
     pub list_loop: bool,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[cfg_attr(test, derive(ts_rs::TS))]
 #[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct PlayersResponse {
@@ -55,7 +55,7 @@ pub struct PlayersResponse {
     pub server_id: i32,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[cfg_attr(test, derive(ts_rs::TS))]
 #[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct Players {
@@ -64,7 +64,7 @@ pub struct Players {
     pub all: HashMap<String, Player>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[cfg_attr(test, derive(ts_rs::TS))]
 #[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct BannedPlayer {
@@ -76,7 +76,7 @@ pub struct BannedPlayer {
     pub ucid: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[cfg_attr(test, derive(ts_rs::TS))]
 #[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct Player {
@@ -92,7 +92,7 @@ pub struct Player {
     pub ipaddr: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[cfg_attr(test, derive(ts_rs::TS))]
 #[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct ServerSettings {
@@ -101,7 +101,7 @@ pub struct ServerSettings {
     pub ip: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[cfg_attr(test, derive(ts_rs::TS))]
 #[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct Settings {
@@ -133,7 +133,7 @@ pub struct Settings {
     pub max_players: i32,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[cfg_attr(test, derive(ts_rs::TS))]
 #[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct AdvancedSettings {
