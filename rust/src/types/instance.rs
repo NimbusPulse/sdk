@@ -44,6 +44,7 @@ pub enum Terrain {
     Sinai,
     Syria,
     TheChannel,
+    GermanyCW,
 }
 
 #[derive(Debug, Deserialize, Clone)]
@@ -83,4 +84,5 @@ pub enum InstanceStoppedReason {
     StoppedNormally,
     StoppedUnexpectedly,
     MaxTriesReached,
+    ServerUpdating,
 }

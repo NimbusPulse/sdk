@@ -2,10 +2,10 @@
 import type { DcsCredentials } from "./DcsCredentials";
 
 export type DcsSettingsPayload = {
-  server_name: string;
-  server_password: string;
-  max_players: number;
+  initial_server_name: string;
+  initial_server_password: string;
+  initial_max_players: number;
   use_own_credentials: boolean;
   credentials: DcsCredentials | null;
-  use_voice_chat: boolean;
+  initial_use_voice_chat: boolean;
 };
