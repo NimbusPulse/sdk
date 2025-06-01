@@ -10,7 +10,6 @@ mod types;
 #[cfg_attr(test, derive(ts_rs::TS))]
 #[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct CreateInstanceRequest {
-    pub user_id: String,
     pub product_id: Uuid,
     pub settings: DcsSettingsPayload,
     pub active_mods: Vec<String>,
@@ -24,17 +23,10 @@ pub struct DcsSettingsPayload {
     pub initial_server_name: String,
     pub initial_server_password: String,
     pub initial_max_players: u32,
-    pub use_own_credentials: bool,
-    pub credentials: Option<DcsCredentials>,
+    pub enable_io: bool,
+    pub enable_os: bool,
+    pub enable_lfs: bool,
     pub initial_use_voice_chat: bool,
-}
-
-#[derive(Debug, Serialize)]
-#[cfg_attr(test, derive(ts_rs::TS))]
-#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
-pub struct DcsCredentials {
-    pub username: String,
-    pub password: String,
 }
 
 #[derive(Debug, Clone)]
@@ -65,19 +57,21 @@ impl Client {
         plan: Uuid,
         active_mods: Vec<impl Into<String>>,
         terrains: Vec<Terrain>,
-        credentials: Option<DcsCredentials>,
         use_voice_chat: bool,
+        enable_io: bool,
+        enable_os: bool,
+        enable_lfs: bool,
     ) -> Result<Instance> {
         let payload = CreateInstanceRequest {
-            user_id: "".to_string(),
             product_id: plan,
             settings: DcsSettingsPayload {
                 initial_server_name: name.into(),
                 initial_server_password: password.map(|p| p.into()).unwrap_or_default(),
                 initial_max_players: max_players,
-                use_own_credentials: credentials.is_some(),
-                credentials,
                 initial_use_voice_chat: use_voice_chat,
+                enable_io,
+                enable_os,
+                enable_lfs,
             },
             active_mods: active_mods.into_iter().map(|m| m.into()).collect(),
             wanted_terrains: terrains,

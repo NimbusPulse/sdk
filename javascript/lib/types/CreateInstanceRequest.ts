@@ -3,7 +3,6 @@ import type { DcsSettingsPayload } from "./DcsSettingsPayload";
 import type { Terrain } from "./Terrain";
 
 export type CreateInstanceRequest = {
-  user_id: string;
   product_id: string;
   settings: DcsSettingsPayload;
   active_mods: Array<string>;
