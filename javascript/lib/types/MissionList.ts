@@ -3,7 +3,7 @@
 export type MissionList = {
   mission_list: Array<string>;
   mission_theatres: Array<string>;
-  list_start_index: number;
-  list_shuffle: boolean;
-  list_loop: boolean;
+  listStartIndex: number;
+  listShuffle: boolean;
+  listLoop: boolean;
 };

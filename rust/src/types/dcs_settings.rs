@@ -7,8 +7,8 @@ pub struct DcsSettings {
     pub initial_server_name: String,
     pub initial_server_password: String,
     pub initial_max_players: u32,
-    pub use_own_credentials: bool,
-    pub credentials_username: String,
-    pub credentials_password: String,
+    pub enable_io: bool,
+    pub enable_os: bool,
+    pub enable_lfs: bool,
     pub initial_use_voice_chat: bool,
 }
