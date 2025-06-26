@@ -1,7 +1,8 @@
 use anyhow::{bail, Ok, Result};
 use serde::Serialize;
+pub use types::dcs_runtime::{DcsRuntime, Players, PlayersResponse, ServerSettings};
 pub use types::instance::{Instance, InstanceStatus, Terrain};
-use types::{dcs_runtime::DcsRuntime, system_resources::ServerResources};
+pub use types::system_resources::ServerResources;
 use uuid::Uuid;
 
 mod types;
