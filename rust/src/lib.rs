@@ -1,6 +1,7 @@
 use anyhow::{bail, Ok, Result};
 use serde::Serialize;
 pub use types::instance::{Instance, InstanceStatus, Terrain};
+pub use types::region::Region;
 use types::{dcs_runtime::DcsRuntime, system_resources::ServerResources};
 use uuid::Uuid;
 
@@ -11,6 +12,7 @@ mod types;
 #[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub struct CreateInstanceRequest {
     pub product_id: Uuid,
+    pub region: Region,
     pub settings: DcsSettingsPayload,
     pub active_mods: Vec<String>,
     pub wanted_terrains: Vec<Terrain>,
@@ -51,6 +53,7 @@ impl Client {
 
     pub async fn create_server(
         &self,
+        region: Region,
         name: impl Into<String>,
         password: Option<impl Into<String>>,
         max_players: u32,
@@ -64,6 +67,7 @@ impl Client {
     ) -> Result<Instance> {
         let payload = CreateInstanceRequest {
             product_id: plan,
+            region,
             settings: DcsSettingsPayload {
                 initial_server_name: name.into(),
                 initial_server_password: password.map(|p| p.into()).unwrap_or_default(),
