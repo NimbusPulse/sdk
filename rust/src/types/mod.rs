@@ -8,6 +8,7 @@ pub mod instance;
 pub mod node;
 pub mod region;
 pub mod system_resources;
+pub mod system_resources_periode;
 
 fn deserialize_array_object<'de, D, T>(deserializer: D) -> Result<Vec<T>, D::Error>
 where
