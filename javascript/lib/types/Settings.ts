@@ -15,7 +15,7 @@ export type Settings = {
   listLoop: boolean;
   name: string;
   require_pure_scripts: boolean;
-  mission_list: Array<string>;
+  missionList: Array<string>;
   require_pure_clients: boolean;
   require_pure_models: boolean;
   maxPlayers: number;
