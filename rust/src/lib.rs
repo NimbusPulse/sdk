@@ -1,8 +1,13 @@
 use anyhow::{bail, Ok, Result};
 use serde::Serialize;
+use types::dcs_runtime::DcsRuntime;
 pub use types::instance::{Instance, InstanceStatus, Terrain};
 pub use types::region::Region;
-use types::{dcs_runtime::DcsRuntime, system_resources::ServerResources};
+pub use types::system_resources::{
+    CpuMetric, CpuMetricData, RamMetric, RamMetricData, ServerResources,
+};
+pub use types::system_resources_periode::SystemResourcesPeriod;
+
 use uuid::Uuid;
 
 mod types;
@@ -114,10 +119,19 @@ impl Client {
         Ok(response.json::<DcsRuntime>().await?)
     }
 
-    pub async fn get_server_resources(&self, id: &Uuid) -> Result<ServerResources> {
+    pub async fn get_server_resources(
+        &self,
+        id: &Uuid,
+        period: SystemResourcesPeriod,
+    ) -> Result<ServerResources> {
         let response = self
             .reqwest_client
-            .get(format!("{}/game_servers/{}/resources", Self::BASE_URL, id))
+            .get(format!(
+                "{}/game_servers/{}/resources?period={}",
+                Self::BASE_URL,
+                id,
+                period
+            ))
             .bearer_auth(self.api_key.clone())
             .send()
             .await?;
