@@ -3,16 +3,24 @@ import type { InstanceStoppedReason } from "./InstanceStoppedReason";
 import type { Terrain } from "./Terrain";
 
 export type InstanceStatus =
+  | "AwaitingContainer"
   | { "InstallingBaseGame": { progress: number | null } }
   | {
     "InstallingTerrains": {
       installed: Array<Terrain>;
       processing: Terrain | null;
       processing_progress: number | null;
+      is_post_creation: boolean;
     };
   }
   | "InstallingMods"
   | "InstallingPost"
+  | {
+    "UninstallingTerrains": {
+      want_uninstall: Array<Terrain>;
+      after_install: Array<Terrain>;
+    };
+  }
   | "ServerStarted"
   | { "ServerStopped": { was_error: boolean; reason: InstanceStoppedReason } }
   | "ServerExpired"
@@ -23,4 +31,4 @@ export type InstanceStatus =
       error_passthrough: [boolean, InstanceStoppedReason] | null;
     };
   }
-  | "WantUpdateServer";
+  | { "WantUpdateServer": { was_stopped: boolean } };
