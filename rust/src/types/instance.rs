@@ -51,6 +51,7 @@ pub enum Terrain {
 #[cfg_attr(test, derive(ts_rs::TS))]
 #[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub enum InstanceStatus {
+    AwaitingContainer,
     InstallingBaseGame {
         progress: Option<u8>,
     },
@@ -58,9 +59,14 @@ pub enum InstanceStatus {
         installed: Vec<Terrain>,
         processing: Option<Terrain>,
         processing_progress: Option<u8>,
+        is_post_creation: bool,
     },
     InstallingMods,
     InstallingPost,
+    UninstallingTerrains {
+        want_uninstall: Vec<Terrain>,
+        after_install: Vec<Terrain>,
+    },
     ServerStarted,
     ServerStopped {
         was_error: bool,
@@ -74,7 +80,9 @@ pub enum InstanceStatus {
     WantServerStopped {
         error_passthrough: Option<(bool, InstanceStoppedReason)>,
     },
-    WantUpdateServer,
+    WantUpdateServer {
+        was_stopped: bool,
+    },
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
@@ -85,4 +93,7 @@ pub enum InstanceStoppedReason {
     StoppedUnexpectedly,
     MaxTriesReached,
     ServerUpdating,
+    RebootRequestedThroughFile,
+    DcsSessionExpired,
+    StoppedForRestart { scheduled: bool },
 }
