@@ -1,6 +1,7 @@
 use serde::{Deserialize, Deserializer};
 use serde_json::Value;
 
+pub mod billing;
 pub mod dcs_chat;
 pub mod dcs_runtime;
 pub mod dcs_settings;
