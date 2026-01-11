@@ -4,4 +4,7 @@ export type InstanceStoppedReason =
   | "StoppedNormally"
   | "StoppedUnexpectedly"
   | "MaxTriesReached"
-  | "ServerUpdating";
+  | "ServerUpdating"
+  | "RebootRequestedThroughFile"
+  | "DcsSessionExpired"
+  | { "StoppedForRestart": { scheduled: boolean } };

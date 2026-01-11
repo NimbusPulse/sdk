@@ -2,6 +2,7 @@ use std::path::PathBuf;
 
 use anyhow::{bail, Ok, Result};
 use serde::Serialize;
+pub use types::billing::BillingType;
 pub use types::dcs_runtime::DcsRuntime;
 pub use types::instance::{Instance, InstanceStatus, Terrain};
 pub use types::region::Region;
@@ -25,6 +26,7 @@ mod types;
 pub struct CreateInstanceRequest {
     pub product_id: Uuid,
     pub region: Region,
+    pub billing_type: BillingType,
     pub settings: DcsSettingsPayload,
     pub active_mods: Vec<String>,
     pub wanted_terrains: Vec<Terrain>,
@@ -66,6 +68,7 @@ impl Client {
     pub async fn create_server(
         &self,
         region: Region,
+        billing_type: BillingType,
         name: impl Into<String>,
         password: Option<impl Into<String>>,
         max_players: u32,
@@ -80,6 +83,7 @@ impl Client {
         let payload = CreateInstanceRequest {
             product_id: plan,
             region,
+            billing_type,
             settings: DcsSettingsPayload {
                 initial_server_name: name.into(),
                 initial_server_password: password.map(|p| p.into()).unwrap_or_default(),
