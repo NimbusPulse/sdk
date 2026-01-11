@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use anyhow::{bail, Ok, Result};
 use serde::Serialize;
 pub use types::dcs_runtime::DcsRuntime;
@@ -8,7 +10,12 @@ pub use types::system_resources::{
 };
 pub use types::system_resources_periode::SystemResourcesPeriod;
 
-use uuid::Uuid;
+use reqwest::multipart::{Form, Part};
+use tokio::fs::File;
+use tokio::io::AsyncWriteExt;
+
+pub use types::files::{FileDownloadResponse, FileInfo, FileListResponse, FileUploadRequest};
+pub use uuid::Uuid;
 
 mod types;
 
@@ -276,6 +283,175 @@ impl Client {
 
         if !response.status().is_success() {
             bail!(format!("Failed to delete server: {:?}", response));
+        }
+
+        Ok(())
+    }
+
+    pub async fn list_files(&self, id: &Uuid, path: impl Into<String>) -> Result<FileListResponse> {
+        let response = self
+            .reqwest_client
+            .get(format!(
+                "{}/game_servers/{}/files?path={}",
+                Self::BASE_URL,
+                id,
+                path.into()
+            ))
+            .bearer_auth(self.api_key.clone())
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            bail!(format!("Failed to list files: {:?}", response));
+        }
+
+        Ok(response.json::<FileListResponse>().await?)
+    }
+
+    pub async fn create_directory(&self, id: &Uuid, path: impl Into<String>) -> Result<()> {
+        let response = self
+            .reqwest_client
+            .post(format!(
+                "{}/game_servers/{}/files/directory?path={}",
+                Self::BASE_URL,
+                id,
+                path.into()
+            ))
+            .bearer_auth(self.api_key.clone())
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            bail!(format!("Failed to create directory: {:?}", response));
+        }
+
+        Ok(())
+    }
+
+    pub async fn upload_file(
+        &self,
+        id: &Uuid,
+        path: impl Into<String>,
+        file: Vec<u8>,
+    ) -> Result<()> {
+        let part = Part::bytes(file)
+            .file_name("upload.bin")
+            .mime_str("application/octet-stream")?;
+        let form = Form::new().part("file", part);
+
+        let response = self
+            .reqwest_client
+            .post(format!(
+                "{}/game_servers/{}/files/upload?path={}",
+                Self::BASE_URL,
+                id,
+                path.into()
+            ))
+            .bearer_auth(self.api_key.clone())
+            .multipart(form)
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            bail!(format!("Failed to upload file: {:?}", response));
+        }
+
+        Ok(())
+    }
+
+    pub async fn upload_file_from(
+        &self,
+        id: &Uuid,
+        path: impl Into<String>,
+        file: impl Into<PathBuf>,
+    ) -> Result<()> {
+        let form = Form::new().file("file", file.into()).await?;
+
+        let response = self
+            .reqwest_client
+            .post(format!(
+                "{}/game_servers/{}/files?path={}",
+                Self::BASE_URL,
+                id,
+                path.into()
+            ))
+            .bearer_auth(self.api_key.clone())
+            .multipart(form)
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            bail!(format!("Failed to upload file: {:?}", response));
+        }
+
+        Ok(())
+    }
+
+    pub async fn download_file(&self, id: &Uuid, path: impl Into<String>) -> Result<Vec<u8>> {
+        let response = self
+            .reqwest_client
+            .get(format!(
+                "{}/game_servers/{}/files/download?path={}",
+                Self::BASE_URL,
+                id,
+                path.into()
+            ))
+            .bearer_auth(self.api_key.clone())
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            bail!(format!("Failed to download file: {:?}", response));
+        }
+
+        let bytes = response.bytes().await?;
+        Ok(bytes.to_vec())
+    }
+
+    pub async fn download_file_to(
+        &self,
+        id: &Uuid,
+        path: impl Into<String>,
+        destination: impl Into<PathBuf>,
+    ) -> Result<()> {
+        let response = self
+            .reqwest_client
+            .get(format!(
+                "{}/game_servers/{}/files/download?path={}",
+                Self::BASE_URL,
+                id,
+                path.into()
+            ))
+            .bearer_auth(self.api_key.clone())
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            bail!(format!("Failed to download file: {:?}", response));
+        }
+
+        let bytes = response.bytes().await?;
+        let mut file = File::create(destination.into()).await?;
+        file.write_all(&bytes).await?;
+
+        Ok(())
+    }
+
+    pub async fn delete_file(&self, id: &Uuid, path: impl Into<String>) -> Result<()> {
+        let response = self
+            .reqwest_client
+            .delete(format!(
+                "{}/game_servers/{}/files?path={}",
+                Self::BASE_URL,
+                id,
+                path.into()
+            ))
+            .bearer_auth(self.api_key.clone())
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            bail!(format!("Failed to delete file: {:?}", response));
         }
 
         Ok(())

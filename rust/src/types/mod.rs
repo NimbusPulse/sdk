@@ -4,6 +4,7 @@ use serde_json::Value;
 pub mod dcs_chat;
 pub mod dcs_runtime;
 pub mod dcs_settings;
+pub mod files;
 pub mod instance;
 pub mod node;
 pub mod region;
