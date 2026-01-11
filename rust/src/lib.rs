@@ -1,6 +1,6 @@
 use anyhow::{bail, Ok, Result};
 use serde::Serialize;
-use types::dcs_runtime::DcsRuntime;
+pub use types::dcs_runtime::DcsRuntime;
 pub use types::instance::{Instance, InstanceStatus, Terrain};
 pub use types::region::Region;
 pub use types::system_resources::{
