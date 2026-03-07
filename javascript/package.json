@@ -1,32 +1,32 @@
 {
-    "name": "@nimbuspulse/client",
-    "description": "",
-    "version": "0.1.13",
-    "keywords": [
-        "dcs",
-        "dcs-world",
-        "nimbuspulse",
-        "sdk",
-        "api"
-    ],
-    "author": "TAINCER",
-    "license": "MIT",
-    "main": "dist/client.js",
-    "type": "module",
-    "publishConfig": {
-        "access": "public"
-    },
-    "scripts": {
-        "dev": "tsx src/main.ts",
-        "build": "vite build"
-    },
-    "devDependencies": {
-        "@types/node": "^22.15",
-        "tsx": "4.19",
-        "typescript": "^5.8",
-        "vite": "6.3"
-    },
-    "dependencies": {
-        "basic-ftp": "5.0"
-    }
+  "name": "@nimbuspulse/client",
+  "description": "",
+  "version": "0.1.13",
+  "keywords": [
+    "dcs",
+    "dcs-world",
+    "nimbuspulse",
+    "sdk",
+    "api"
+  ],
+  "author": "TAINCER",
+  "license": "MIT",
+  "main": "dist/client.js",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "dev": "tsx src/main.ts",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15",
+    "tsx": "4.19",
+    "typescript": "^5.8",
+    "vite": "6.3"
+  },
+  "dependencies": {
+    "basic-ftp": "5.0"
+  }
 }
