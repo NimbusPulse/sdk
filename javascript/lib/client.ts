@@ -1,5 +1,3 @@
-import { readFile, writeFile } from "fs/promises";
-import * as path from "path";
 import type {
   AddMissionsResponse,
   BanPlayerRequest,
@@ -31,7 +29,7 @@ import type {
   StartServerResponse,
   Terrain,
   WebConsoleExecuteRequest,
-} from "./types.js";
+} from "./types.ts";
 
 export type Fetch = {
   (input: URL | RequestInfo, init?: RequestInit | undefined): Promise<Response>;
@@ -189,10 +187,13 @@ export default class Client {
       },
     };
 
-    return await this.requestJson<InstanceSafe>(this.buildUrl("/game_servers"), {
-      method: "POST",
-      body: this.createJsonBody(payload),
-    });
+    return await this.requestJson<InstanceSafe>(
+      this.buildUrl("/game_servers"),
+      {
+        method: "POST",
+        body: this.createJsonBody(payload),
+      },
+    );
   }
 
   public async getServers(): Promise<InstancesResponse> {
@@ -249,7 +250,7 @@ export default class Client {
     return await this.requestJson<DcsChatSafe[]>(
       this.buildUrl(`/game_servers/${id}/chat`),
       {
-      method: "GET",
+        method: "GET",
       },
     );
   }
@@ -358,20 +359,6 @@ export default class Client {
     );
   }
 
-  public async uploadFileFrom(
-    id: string,
-    destinationPath: string,
-    localFilePath: string,
-  ): Promise<void> {
-    const file = await readFile(localFilePath);
-    await this.uploadFile(
-      id,
-      destinationPath,
-      file,
-      path.basename(localFilePath),
-    );
-  }
-
   public async downloadFile(id: string, filePath: string): Promise<Uint8Array> {
     return await this.requestBytes(
       this.buildUrl(`/game_servers/${id}/files/download`, { path: filePath }),
@@ -379,15 +366,6 @@ export default class Client {
         method: "GET",
       },
     );
-  }
-
-  public async downloadFileTo(
-    id: string,
-    remotePath: string,
-    destinationPath: string,
-  ): Promise<void> {
-    const content = await this.downloadFile(id, remotePath);
-    await writeFile(destinationPath, content);
   }
 
   public async deleteFile(id: string, filePath: string): Promise<void> {
@@ -404,13 +382,6 @@ export default class Client {
       method: "PUT",
       body: this.createJsonBody(request),
     });
-  }
-
-  public async uploadMission(id: string, missionPath: string): Promise<void> {
-    const parsedMissionPath = path.parse(missionPath);
-    const missionName = parsedMissionPath.base;
-    await this.uploadFileFrom(id, `Missions/${missionName}`, missionPath);
-    await this.addMissions(id, [missionName]);
   }
 
   public async addMissions(
@@ -571,5 +542,4 @@ export default class Client {
       },
     );
   }
-
 }

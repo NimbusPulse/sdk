@@ -1,0 +1,6 @@
+{
+  "name": "@nimbuspulse/client",
+  "version": "0.2.1",
+  "license": "MIT",
+  "exports": "./mod.ts"
+}
