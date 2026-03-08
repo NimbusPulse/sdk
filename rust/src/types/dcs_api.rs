@@ -2,8 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use super::dcs_runtime::{GetMissionListResponse, Settings};
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub struct AddMissionsResponse(pub bool);
+pub type AddMissionsResponse = bool;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct DeleteMissionsResponse {
@@ -23,20 +22,15 @@ pub struct StartServerResponse {
     pub res: i32,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub struct GetPauseServerResponse;
+pub type GetPauseServerResponse = ();
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub struct GetResumeServerResponse;
+pub type GetResumeServerResponse = ();
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub struct SetServerSettingsResponse(pub bool);
+pub type SetServerSettingsResponse = bool;
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-pub struct SetServerSettingsRequest(pub Settings);
+pub type SetServerSettingsRequest = Settings;
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub struct KickPlayerResponse(pub bool);
+pub type KickPlayerResponse = bool;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct KickPlayerRequest {
@@ -44,8 +38,7 @@ pub struct KickPlayerRequest {
     pub reason: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub struct BanPlayerResponse(pub bool);
+pub type BanPlayerResponse = bool;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct BanPlayerRequest {
@@ -61,5 +54,4 @@ pub struct SendChatRequest {
     pub msg: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub struct SendChatResponse;
+pub type SendChatResponse = ();
