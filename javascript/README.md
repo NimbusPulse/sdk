@@ -1,23 +1,40 @@
 # @nimbuspulse/client
 
-Node.js SDK for the NimbusPulse coordinator API.
-
-## Requirements
-
-- Node.js `^24 || ^25`
+TypeScript SDK for the NimbusPulse coordinator API.
 
 ## Install
+
+### npm
+
+- Node.js `^24 || ^25`
 
 ```bash
 npm install @nimbuspulse/client
 ```
 
+### JSR
+
+```bash
+deno add jsr:@nimbuspulse/client
+```
+
 ## Usage
+
+### npm / Node.js
 
 ```ts
 import Client from "@nimbuspulse/client";
 
 const client = new Client(process.env.NIMBUSPULSE_API_KEY!);
+const servers = await client.getServers();
+```
+
+### JSR / Deno
+
+```ts
+import Client from "jsr:@nimbuspulse/client";
+
+const client = new Client(Deno.env.get("NIMBUSPULSE_API_KEY")!);
 const servers = await client.getServers();
 ```
 
@@ -35,8 +52,11 @@ const servers = await client.getServers();
 
 ## Package Exports
 
-- Default export: `Client`
-- Type exports: generated API types from `lib/types.ts`
+The Node.js client includes extra filesystem helpers such as `uploadFileFrom`, `downloadFileTo`, and `uploadMission`.
+
+## Cross-Runtime Notes
+
+JSR publishes the portable client. The Node.js-only filesystem helpers are not available there.
 
 ## Development
 
