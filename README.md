@@ -1,27 +1,49 @@
 # NimbusPulse SDK
 
-The NimbusPulse SDK provides developers with a set of tools and interfaces to interact programmatically with the NimbusPulse platform, which is a DCS (Digital Combat Simulator) server hosting solution. Using this SDK, developers can easily integrate NimbusPulse functionalities into their applications, enabling automation, management, and monitoring of DCS server instances.
+NimbusPulse provides SDKs for interacting with the NimbusPulse coordinator API for DCS server hosting.
 
-## Features
+This repository currently contains:
 
-- **Server Management:** Create, start, stop, and configure DCS servers directly from your application.
-- **Automation:** Automate server tasks such as mission rotations and server monitoring.
-- **Monitoring:** Retrieve server metrics and logs for better insights into performance.
-- **Multi-language Support:** Designed to work with multiple programming languages.
+- `javascript/`: Node.js + TypeScript client published as `@nimbuspulse/client`
+- `rust/`: Rust client crate published as `nimbuspulse-client`
 
-## Supported Languages
+## Repository Layout
 
-| Language     | Status                             |
-|--------------|------------------------------------|
-| JavaScript   | Minimal                            |
-| Rust         | Minimal                            |
+| Path          | Language             | Version |
+| ------------- | -------------------- | ------- |
+| `javascript/` | Node.js / TypeScript | `0.2.0` |
+| `rust/`       | Rust                 | `0.2.0` |
 
-## Support Level Definitions
- - Minimal   : Basic functionality is operational (Create, Start, Stop, Delete)
- - Functional: Core features are complete with additional settings and customizations available.
- - Complete  : All features are fully implemented, including advanced functionality like runtime with live player count, chat, and more.
+## Current API Coverage
 
-> **Note:** As of now, both JavaScript (with TypeScript support) and Rust versions of the SDK are under active development. Future versions will include more language support and fully stable SDKs. Do you have a language we currently don't cover? Open a [issue](https://github.com/NimbusPulse/sdk/issues) or join our [discord](https://nimbuspulse.com/discord) to chat.
+Both implementations cover:
 
-## Installation
-WIP
+- Health checks
+- Server lifecycle management
+- Server lookup and runtime retrieval
+- Terrain changes
+- Resource metrics
+- Chat retrieval
+- File management and file transfer
+- Mission upload and mission rotation endpoints
+- DCS pause/resume and settings updates
+- Player kick / ban
+- SRS client inspection and moderation for servers with the SRS mod installed
+- Webconsole execution for servers with the webconsole mod installed
+
+The Rust client also includes trigger management:
+
+- Create trigger
+- List triggers
+- Delete trigger
+
+This feature is not stable yet and will change in the future.
+
+## Package-Specific Docs
+
+- JavaScript package docs: [`javascript/README.md`](javascript/README.md)
+- Rust package docs: [`rust/README.md`](rust/README.md)
+
+## License
+
+MIT. See [`LICENSE`](LICENSE).
