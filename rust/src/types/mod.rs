@@ -2,6 +2,7 @@ use serde::{Deserialize, Deserializer};
 use serde_json::Value;
 
 pub mod billing;
+pub mod dcs_api;
 pub mod dcs_chat;
 pub mod dcs_runtime;
 pub mod dcs_settings;
@@ -9,8 +10,11 @@ pub mod files;
 pub mod instance;
 pub mod node;
 pub mod region;
+pub mod srs;
 pub mod system_resources;
 pub mod system_resources_periode;
+pub mod triggers;
+pub mod webconsole;
 
 fn deserialize_array_object<'de, D, T>(deserializer: D) -> Result<Vec<T>, D::Error>
 where

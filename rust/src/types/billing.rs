@@ -1,10 +1,9 @@
 use std::str::FromStr;
 
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, PartialEq, Eq)]
-#[cfg_attr(test, derive(ts_rs::TS))]
-#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
 pub enum BillingType {
     Hourly,
     Monthly,
@@ -23,10 +22,10 @@ impl FromStr for BillingType {
     type Err = String;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s.to_lowercase().as_str() {
+        match s {
             "hourly" => Ok(BillingType::Hourly),
             "monthly" => Ok(BillingType::Monthly),
-            _ => Err(format!("Invalid billing type: {}", s)),
+            _ => Err(format!("Invalid billing type: {s}")),
         }
     }
 }

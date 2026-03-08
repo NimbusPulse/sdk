@@ -1,10 +1,8 @@
 use std::fmt;
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Deserialize, Clone)]
-#[cfg_attr(test, derive(ts_rs::TS))]
-#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub enum SystemResourcesPeriod {
     #[serde(rename = "now")]
     Now,
@@ -17,7 +15,7 @@ pub enum SystemResourcesPeriod {
 }
 
 impl fmt::Display for SystemResourcesPeriod {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             SystemResourcesPeriod::Now => write!(f, "now"),
             SystemResourcesPeriod::Hour => write!(f, "hour"),

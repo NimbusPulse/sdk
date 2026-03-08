@@ -1,22 +1,29 @@
 use std::collections::HashMap;
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Deserialize)]
-#[cfg_attr(test, derive(ts_rs::TS))]
-#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
-pub struct DcsRuntime {
-    pub paused: bool,
-    pub mission_info: Option<MissionInfo>,
-    pub mission_list: Option<MissionList>,
-    pub players: Option<PlayersResponse>,
-    pub settings: Option<ServerSettings>,
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub enum CurrentRuntimeAction {
+    StartingMission,
+    StartingServer,
 }
 
-#[derive(Debug, Clone, Deserialize)]
-#[cfg_attr(test, derive(ts_rs::TS))]
-#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
-pub struct MissionInfo {
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct DcsRuntime {
+    pub current_action: Option<CurrentRuntimeAction>,
+    pub last_full_update: i64,
+    pub paused: bool,
+    pub mission_info: GetMissionInfoResponse,
+    #[serde(flatten)]
+    pub mission_list: GetMissionListResponse,
+    #[serde(flatten)]
+    pub players: GetPlayersResponse,
+    #[serde(flatten)]
+    pub settings: GetServerSettingsResponse,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct GetMissionInfoResponse {
     pub result_red: Option<i32>,
     pub result_blue: Option<i32>,
     pub mission_filename: String,
@@ -25,10 +32,8 @@ pub struct MissionInfo {
     pub mission_description: String,
 }
 
-#[derive(Debug, Clone, Deserialize)]
-#[cfg_attr(test, derive(ts_rs::TS))]
-#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
-pub struct MissionList {
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct GetMissionListResponse {
     #[serde(
         rename = "missionList",
         deserialize_with = "super::deserialize_mission_field"
@@ -47,38 +52,20 @@ pub struct MissionList {
     pub list_loop: bool,
 }
 
-#[derive(Debug, Clone, Deserialize)]
-#[cfg_attr(test, derive(ts_rs::TS))]
-#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
-pub struct PlayersResponse {
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct GetPlayersResponse {
     pub players: Players,
     pub server_id: i32,
 }
 
-#[derive(Debug, Clone, Deserialize)]
-#[cfg_attr(test, derive(ts_rs::TS))]
-#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Players {
     #[serde(deserialize_with = "super::deserialize_array_object")]
     pub banned: Vec<BannedPlayer>,
     pub all: HashMap<String, Player>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
-#[cfg_attr(test, derive(ts_rs::TS))]
-#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
-pub struct BannedPlayer {
-    pub banned_from: i64,
-    pub banned_until: i64,
-    pub ipaddr: String,
-    pub name: String,
-    pub reason: String,
-    pub ucid: String,
-}
-
-#[derive(Debug, Clone, Deserialize)]
-#[cfg_attr(test, derive(ts_rs::TS))]
-#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Player {
     pub ping: i32,
     pub side: i32,
@@ -92,18 +79,24 @@ pub struct Player {
     pub ipaddr: String,
 }
 
-#[derive(Debug, Clone, Deserialize)]
-#[cfg_attr(test, derive(ts_rs::TS))]
-#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
-pub struct ServerSettings {
-    pub mission_list: MissionList,
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct BannedPlayer {
+    pub banned_from: i64,
+    pub banned_until: i64,
+    pub ipaddr: String,
+    pub name: String,
+    pub reason: String,
+    pub ucid: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct GetServerSettingsResponse {
+    pub mission_list: GetMissionListResponse,
     pub settings: Settings,
     pub ip: String,
 }
 
-#[derive(Debug, Clone, Deserialize)]
-#[cfg_attr(test, derive(ts_rs::TS))]
-#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct Settings {
     pub description: String,
     pub require_pure_textures: bool,
@@ -133,9 +126,7 @@ pub struct Settings {
     pub max_players: i32,
 }
 
-#[derive(Debug, Clone, Deserialize)]
-#[cfg_attr(test, derive(ts_rs::TS))]
-#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct AdvancedSettings {
     pub allow_change_tailno: bool,
     pub disable_events: bool,

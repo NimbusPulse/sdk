@@ -7,21 +7,18 @@ license = "MIT"
 readme = "../README.md"
 keywords = ["dcs", "dcs-world", "nimbuspulse", "sdk", "api"]
 version = "0.1.13"
-edition = "2021"
+edition = "2024"
 
 [[bin]]
 name = "main"
 path = "src/bin/main.rs"
 
 [target.'cfg(not(test))'.dependencies]
-tokio = { version = "1.47", features = ["full"] }
+tokio = { version = "1.50", features = ["full"] }
 
 [dependencies]
 anyhow = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-reqwest = { version = "0.12", default-features = false, features = ["json", "multipart", "stream", "rustls-tls"] }
-uuid = { version = "1.18", features = ["v7", "serde"] }
-
-[dev-dependencies]
-ts-rs = { version = "11.1", features = ["format", "uuid", "uuid-impl"] }
+reqwest = { version = "0.13", default-features = false, features = ["json", "multipart", "stream"] }
+uuid = { version = "1.22", features = ["v7", "serde"] }

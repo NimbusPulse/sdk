@@ -1,0 +1,41 @@
+name: Rust CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: buildjet-2vcpu-ubuntu-2204
+
+    strategy:
+      matrix:
+        rust-version: [stable]
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Use Rust ${{ matrix.rust-version }}
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.rust-version }}
+
+      - name: Cache Cargo artifacts
+        uses: buildjet/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            rust/target/
+          key: ${{ runner.os }}-cargo-${{ matrix.rust-version }}-${{ hashFiles('rust/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-${{ matrix.rust-version }}-
+            ${{ runner.os }}-cargo-
+
+      - name: Build
+        run: cargo build --locked
+        working-directory: rust
