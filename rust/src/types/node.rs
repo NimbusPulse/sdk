@@ -1,17 +1,13 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use crate::types::region::Region;
 
-#[derive(Debug, Deserialize, Clone)]
-#[cfg_attr(test, derive(ts_rs::TS))]
-#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Node {
     pub id: Uuid,
     pub name: String,
     pub region: Region,
     pub ip: String,
-    pub port: u32,
-    pub max_cpu: u32,
-    pub max_ram: u32,
+    pub domain: String,
 }

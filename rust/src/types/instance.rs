@@ -1,36 +1,66 @@
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
+use super::billing::BillingType;
+use super::dcs_runtime::DcsRuntime;
 use super::dcs_settings::DcsSettings;
+use super::region::Region;
 
-#[derive(Debug, Deserialize, Clone)]
-#[cfg_attr(test, derive(ts_rs::TS))]
-#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum GameType {
+    Dcs,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Instance {
     pub id: Uuid,
     pub node_id: Uuid,
-    pub user_id: String,
+    pub user_id: Uuid,
     pub product_id: Uuid,
-    pub ip: String,
-    pub port: u32,
-    pub webgui_port: u32,
-    pub ftp_port: u32,
+    pub game_type: GameType,
+    pub billing_type: BillingType,
+    pub port: i32,
+    pub webgui_port: i32,
+    pub ftp_port: i32,
     pub ftp_username: String,
     pub ftp_password: String,
-    pub pid: Option<u32>,
+    pub pid: Option<i32>,
     pub status: InstanceStatus,
     pub want_delete: bool,
     pub wanted_terrains: Vec<Terrain>,
-    pub rented_at: u64,
-    pub rented_until: Option<u32>,
+    pub rented_at: i64,
+    pub rented_until: Option<i64>,
     pub active_mods: Vec<String>,
     pub created_at: String,
     pub dcs_settings: Option<DcsSettings>,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
-#[cfg_attr(test, derive(ts_rs::TS))]
-#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct InstanceNodeResource {
+    pub region: Region,
+    pub ip: String,
+    pub domain: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct InstanceResource {
+    #[serde(flatten)]
+    pub instance: Instance,
+    #[serde(flatten)]
+    pub node: InstanceNodeResource,
+    pub runtime: Option<GameData>,
+}
+
+pub type InstancesResponse = Vec<InstanceResource>;
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(untagged)]
+pub enum GameData {
+    Dcs(DcsRuntime),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub enum Terrain {
     Afghanistan,
     Caucasus,
@@ -38,6 +68,7 @@ pub enum Terrain {
     Iraq,
     Kola,
     MarianaIslands,
+    MarianaIslandsWWII,
     Nevada,
     Normandy,
     PersianGulf,
@@ -47,9 +78,7 @@ pub enum Terrain {
     GermanyCW,
 }
 
-#[derive(Debug, Deserialize, Clone)]
-#[cfg_attr(test, derive(ts_rs::TS))]
-#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub enum InstanceStatus {
     AwaitingContainer,
     InstallingBaseGame {
@@ -86,8 +115,6 @@ pub enum InstanceStatus {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
-#[cfg_attr(test, derive(ts_rs::TS))]
-#[cfg_attr(test, ts(export, export_to = "../../javascript/lib/types/"))]
 pub enum InstanceStoppedReason {
     StoppedNormally,
     StoppedUnexpectedly,
@@ -96,4 +123,10 @@ pub enum InstanceStoppedReason {
     RebootRequestedThroughFile,
     DcsSessionExpired,
     StoppedForRestart { scheduled: bool },
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct ApiError {
+    pub message: String,
+    pub code: String,
 }
