@@ -1,7 +1,7 @@
 {
   "name": "@nimbuspulse/client",
   "description": "Node.js SDK for the NimbusPulse coordinator API",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "keywords": [
     "dcs",
     "dcs-world",
