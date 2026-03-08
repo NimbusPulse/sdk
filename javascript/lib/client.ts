@@ -1,6 +1,6 @@
 import { readFile, writeFile } from "fs/promises";
-import path from "path";
-import {
+import * as path from "path";
+import type {
   AddMissionsResponse,
   BanPlayerRequest,
   BanPlayerResponse,
@@ -31,9 +31,9 @@ import {
   StartServerResponse,
   Terrain,
   WebConsoleExecuteRequest,
-} from "./types";
+} from "./types.js";
 
-type Fetch = {
+export type Fetch = {
   (input: URL | RequestInfo, init?: RequestInit | undefined): Promise<Response>;
   (
     input: string | URL | Request,
@@ -41,7 +41,7 @@ type Fetch = {
   ): Promise<Response>;
 };
 
-type BinaryInput = Uint8Array | ArrayBuffer;
+export type BinaryInput = Uint8Array | ArrayBuffer;
 
 export default class Client {
   private apiKey: string;

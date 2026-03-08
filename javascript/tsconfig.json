@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2024",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "declaration": true,
+    "declarationMap": false,
+    "sourceMap": false,
+    "outDir": "dist",
+    "rootDir": "lib",
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": false,
+    "verbatimModuleSyntax": true,
+    "forceConsistentCasingInFileNames": true,
+  },
+  "include": ["lib/**/*.ts", "scripts/**/*.mjs"],
+  "exclude": ["dist", "node_modules", "src"],
+}
