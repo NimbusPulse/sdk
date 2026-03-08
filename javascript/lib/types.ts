@@ -152,7 +152,7 @@ export type FileInfo = {
 
 export type FileListResponse = { files: Array<FileInfo>; current_path: string };
 
-export type GameData = DcsRuntimeSafe;
+export type GameRuntime = DcsRuntimeSafe;
 
 export type GameType = "dcs";
 
@@ -178,7 +178,7 @@ export type GetPauseServerResponse = null;
 export type GetResumeServerResponse = null;
 
 export type InstanceResource = {
-  runtime: GameData | null;
+  runtime: GameRuntime | null;
   id: string;
   node_id: string;
   user_id: string;

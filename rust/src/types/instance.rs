@@ -49,14 +49,14 @@ pub struct InstanceResource {
     pub instance: Instance,
     #[serde(flatten)]
     pub node: InstanceNodeResource,
-    pub runtime: Option<GameData>,
+    pub runtime: Option<GameRuntime>,
 }
 
 pub type InstancesResponse = Vec<InstanceResource>;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
-pub enum GameData {
+pub enum GameRuntime {
     Dcs(DcsRuntime),
 }
 

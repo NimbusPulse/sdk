@@ -20,10 +20,9 @@ pub use types::files::{
     FileDownloadResponse, FileInfo, FileListResponse, FileUploadRequest, MoveFileRequest,
 };
 pub use types::instance::{
-    ApiError, GameData, GameType, Instance, InstanceNodeResource, InstanceResource,
+    ApiError, GameRuntime, GameType, Instance, InstanceNodeResource, InstanceResource,
     InstanceStatus, InstanceStoppedReason, InstancesResponse, Terrain,
 };
-pub use types::node::Node;
 pub use types::region::Region;
 pub use types::srs::{SrsClient, SrsModRequest, SrsServerInfo};
 pub use types::system_resources::{PrometheusSeries, ServerResourcesResponse};
@@ -161,8 +160,9 @@ impl Client {
 
     pub async fn get_runtime(&self, id: &Uuid) -> Result<DcsRuntime> {
         let server = self.get_server(id).await?;
+
         match server.runtime {
-            Some(GameData::Dcs(runtime)) => Ok(runtime),
+            Some(GameRuntime::Dcs(runtime)) => Ok(runtime),
             None => bail!("server runtime is not available"),
         }
     }
