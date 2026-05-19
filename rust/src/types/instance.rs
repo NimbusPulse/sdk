@@ -32,6 +32,7 @@ pub struct Instance {
     pub rented_at: i64,
     pub rented_until: Option<i64>,
     pub active_mods: Vec<String>,
+    pub subscription_cancel_at_period_end: bool,
     pub created_at: String,
     pub dcs_settings: Option<DcsSettings>,
 }
@@ -50,6 +51,7 @@ pub struct InstanceResource {
     #[serde(flatten)]
     pub node: InstanceNodeResource,
     pub runtime: Option<GameRuntime>,
+    pub permissions: Option<InstancePermissions>,
 }
 
 pub type InstancesResponse = Vec<InstanceResource>;
@@ -79,6 +81,44 @@ pub enum Terrain {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
+pub struct InstancePermissions {
+    pub owner_user: UserResource,
+    pub permissions: Vec<Permission>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
+pub struct UserResource {
+    pub id: Uuid,
+    pub name: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
+pub enum Permission {
+    #[serde(rename = "instance:view")]
+    InstanceView,
+    #[serde(rename = "instance:actions")]
+    InstanceActions,
+    #[serde(rename = "instance:chat")]
+    InstanceChat,
+    #[serde(rename = "instance:players:manage")]
+    InstancePlayersManage,
+    #[serde(rename = "instance:missions")]
+    InstanceMissions,
+    #[serde(rename = "instance:settings")]
+    InstanceSettings,
+    #[serde(rename = "instance:infrastructure")]
+    InstanceInfrastructure,
+    #[serde(rename = "instance:mods")]
+    InstanceMods,
+    #[serde(rename = "instance:scheduled_tasks")]
+    InstanceScheduledTasks,
+    #[serde(rename = "instance:file:read")]
+    InstanceFileRead,
+    #[serde(rename = "instance:file:write")]
+    InstanceFileWrite,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub enum InstanceStatus {
     AwaitingContainer,
     InstallingBaseGame {
@@ -90,7 +130,10 @@ pub enum InstanceStatus {
         processing_progress: Option<u8>,
         is_post_creation: bool,
     },
-    InstallingMods,
+    InstallingMods {
+        is_post_creation: bool,
+    },
+    UninstallingMods,
     InstallingPost,
     UninstallingTerrains {
         want_uninstall: Vec<Terrain>,
@@ -122,6 +165,7 @@ pub enum InstanceStoppedReason {
     ServerUpdating,
     RebootRequestedThroughFile,
     DcsSessionExpired,
+    DcsAuthFailed,
     StoppedForRestart { scheduled: bool },
 }
 

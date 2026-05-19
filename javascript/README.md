@@ -41,7 +41,7 @@ const servers = await client.getServers();
 ## Implemented Capabilities
 
 - Health checks
-- Create, fetch, update, start, stop, restart, full restart, update, and delete servers
+- Create, fetch, update, start, stop, restart, full restart, update, delete, and reactivate servers
 - Runtime lookup, chat retrieval, and resource metrics
 - Terrain changes
 - File listing, directory creation, upload, download, move, and delete
@@ -49,6 +49,7 @@ const servers = await client.getServers();
 - DCS pause / resume, settings save, kick, ban, and chat send
 - SRS client listing, kick, and ban for servers with the SRS mod installed
 - Webconsole execution for servers with the webconsole mod installed
+- Trigger create, list, and delete
 
 ## Package Exports
 

@@ -4,6 +4,7 @@ import type {
   BanPlayerResponse,
   BillingType,
   CreateInstanceRequest,
+  CreateTriggerRequest,
   DcsChatSafe,
   DcsRuntimeSafe,
   DeleteMissionsResponse,
@@ -28,6 +29,7 @@ import type {
   StartMissionResponse,
   StartServerResponse,
   Terrain,
+  Trigger,
   WebConsoleExecuteRequest,
 } from "./types.ts";
 
@@ -306,6 +308,12 @@ export default class Client {
     });
   }
 
+  public async reactivateServer(id: string): Promise<void> {
+    await this.requestVoid(this.buildUrl(`/game_servers/${id}/reactivate`), {
+      method: "POST",
+    });
+  }
+
   public async getServerResources(
     id: string,
     period: "now" | "hour" | "day" | "week",
@@ -539,6 +547,37 @@ export default class Client {
       {
         method: "POST",
         body: this.createJsonBody(request),
+      },
+    );
+  }
+
+  public async createTrigger(
+    id: string,
+    request: CreateTriggerRequest,
+  ): Promise<Trigger> {
+    return await this.requestJson<Trigger>(
+      this.buildUrl(`/game_servers/${id}/triggers`),
+      {
+        method: "POST",
+        body: this.createJsonBody(request),
+      },
+    );
+  }
+
+  public async listTriggers(id: string): Promise<Trigger[]> {
+    return await this.requestJson<Trigger[]>(
+      this.buildUrl(`/game_servers/${id}/triggers`),
+      {
+        method: "GET",
+      },
+    );
+  }
+
+  public async deleteTrigger(id: string, triggerId: string): Promise<void> {
+    await this.requestVoid(
+      this.buildUrl(`/game_servers/${id}/triggers/${triggerId}`),
+      {
+        method: "DELETE",
       },
     );
   }
