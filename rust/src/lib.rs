@@ -24,6 +24,7 @@ pub use types::instance::{
     InstanceResource, InstanceStatus, InstanceStoppedReason, InstancesResponse, Permission,
     Terrain, UserResource,
 };
+pub use types::mods::{ChangeModsRequest, ModConfigType};
 pub use types::region::Region;
 pub use types::srs::{SrsClient, SrsModRequest, SrsServerInfo};
 pub use types::system_resources::{PrometheusSeries, ServerResourcesResponse};
@@ -299,6 +300,30 @@ impl Client {
                 .post(format!("{}/game_servers/{}/reactivate", Self::BASE_URL, id)),
             "failed to reactivate server",
         )
+        .await
+    }
+
+    pub async fn change_mods(&self, id: &Uuid, request: &ChangeModsRequest) -> Result<()> {
+        self.send_unit(
+            self.reqwest_client
+                .put(format!(
+                    "{}/game_servers/{}/mods/change",
+                    Self::BASE_URL,
+                    id
+                ))
+                .json(request),
+            "failed to change mods",
+        )
+        .await
+    }
+
+    pub async fn get_mod(&self, id: &Uuid, mod_id: ModConfigType) -> Result<serde_json::Value> {
+        self.send_json(self.reqwest_client.get(format!(
+            "{}/game_servers/{}/mods/{}",
+            Self::BASE_URL,
+            id,
+            mod_id
+        )))
         .await
     }
 

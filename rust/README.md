@@ -32,6 +32,7 @@ async fn main() -> anyhow::Result<()> {
 - Create, fetch, update, start, stop, restart, full restart, update, delete, and reactivate servers
 - Runtime lookup, chat retrieval, and resource metrics
 - Terrain changes
+- Mod config retrieval, installation changes, and uninstallation changes
 - File listing, directory creation, upload, download, move, and delete
 - Mission upload, add, delete, select, and start
 - DCS pause / resume, settings save, kick, ban, and chat send

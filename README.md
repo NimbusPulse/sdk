@@ -22,6 +22,7 @@ Both implementations cover:
 - Server lifecycle management, including monthly subscription reactivation
 - Server lookup and runtime retrieval
 - Terrain changes
+- Mod config retrieval, installation changes, and uninstallation changes
 - Resource metrics
 - Chat retrieval
 - File management and file transfer
