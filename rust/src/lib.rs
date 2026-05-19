@@ -20,8 +20,9 @@ pub use types::files::{
     FileDownloadResponse, FileInfo, FileListResponse, FileUploadRequest, MoveFileRequest,
 };
 pub use types::instance::{
-    ApiError, GameRuntime, GameType, Instance, InstanceNodeResource, InstanceResource,
-    InstanceStatus, InstanceStoppedReason, InstancesResponse, Terrain,
+    ApiError, GameRuntime, GameType, Instance, InstanceNodeResource, InstancePermissions,
+    InstanceResource, InstanceStatus, InstanceStoppedReason, InstancesResponse, Permission,
+    Terrain, UserResource,
 };
 pub use types::region::Region;
 pub use types::srs::{SrsClient, SrsModRequest, SrsServerInfo};
@@ -288,6 +289,15 @@ impl Client {
             self.reqwest_client
                 .delete(format!("{}/game_servers/{}", Self::BASE_URL, id)),
             "failed to delete server",
+        )
+        .await
+    }
+
+    pub async fn reactivate_server(&self, id: &Uuid) -> Result<()> {
+        self.send_unit(
+            self.reqwest_client
+                .post(format!("{}/game_servers/{}/reactivate", Self::BASE_URL, id)),
+            "failed to reactivate server",
         )
         .await
     }

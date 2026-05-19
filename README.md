@@ -19,7 +19,7 @@ This repository currently contains:
 Both implementations cover:
 
 - Health checks
-- Server lifecycle management
+- Server lifecycle management, including monthly subscription reactivation
 - Server lookup and runtime retrieval
 - Terrain changes
 - Resource metrics
@@ -30,14 +30,9 @@ Both implementations cover:
 - Player kick / ban
 - SRS client inspection and moderation for servers with the SRS mod installed
 - Webconsole execution for servers with the webconsole mod installed
+- Trigger create, list, and delete
 
-The Rust client also includes trigger management:
-
-- Create trigger
-- List triggers
-- Delete trigger
-
-This feature is not stable yet and will change in the future.
+Trigger management is not stable yet and will change in the future.
 
 ## Package-Specific Docs
 

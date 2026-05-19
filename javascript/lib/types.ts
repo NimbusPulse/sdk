@@ -177,8 +177,14 @@ export type GetPauseServerResponse = null;
 
 export type GetResumeServerResponse = null;
 
+export type InstancePermissions = {
+  owner_user: UserResource;
+  permissions: Array<Permission>;
+};
+
 export type InstanceResource = {
   runtime: GameRuntime | null;
+  permissions: InstancePermissions | null;
   id: string;
   node_id: string;
   user_id: string;
@@ -197,6 +203,7 @@ export type InstanceResource = {
   rented_at: number;
   rented_until: number | null;
   active_mods: Array<string>;
+  subscription_cancel_at_period_end: boolean;
   created_at: string;
   dcs_settings: DcsSettingsSafe | null;
   region: Region;
@@ -223,6 +230,7 @@ export type InstanceSafe = {
   rented_at: number;
   rented_until: number | null;
   active_mods: Array<string>;
+  subscription_cancel_at_period_end: boolean;
   created_at: string;
   dcs_settings: DcsSettingsSafe | null;
 };
@@ -242,7 +250,8 @@ export type InstanceStatus =
         is_post_creation: boolean;
       };
     }
-  | "InstallingMods"
+  | { InstallingMods: { is_post_creation: boolean } }
+  | "UninstallingMods"
   | "InstallingPost"
   | {
       UninstallingTerrains: {
@@ -269,6 +278,7 @@ export type InstanceStoppedReason =
   | "ServerUpdating"
   | "RebootRequestedThroughFile"
   | "DcsSessionExpired"
+  | "DcsAuthFailed"
   | { StoppedForRestart: { scheduled: boolean } };
 
 export type InstancesResponse = Array<InstanceResource>;
@@ -278,6 +288,19 @@ export type KickPlayerRequest = { id: number; reason: string };
 export type KickPlayerResponse = boolean;
 
 export type MoveFileRequest = { source: string; destination: string };
+
+export type Permission =
+  | "instance:view"
+  | "instance:actions"
+  | "instance:chat"
+  | "instance:players:manage"
+  | "instance:missions"
+  | "instance:settings"
+  | "instance:infrastructure"
+  | "instance:mods"
+  | "instance:scheduled_tasks"
+  | "instance:file:read"
+  | "instance:file:write";
 
 export type Player = {
   ping: number;
@@ -406,5 +429,7 @@ export type TriggerCondition =
     }
   | { type: "OnEvent"; config: { event_type: string } }
   | { type: "Schedule"; config: { cron_expression: string } };
+
+export type UserResource = { id: string; name: string };
 
 export type WebConsoleExecuteRequest = { code: string };

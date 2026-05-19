@@ -29,7 +29,7 @@ async fn main() -> anyhow::Result<()> {
 ## Implemented Capabilities
 
 - Health checks
-- Create, fetch, update, start, stop, restart, full restart, update, and delete servers
+- Create, fetch, update, start, stop, restart, full restart, update, delete, and reactivate servers
 - Runtime lookup, chat retrieval, and resource metrics
 - Terrain changes
 - File listing, directory creation, upload, download, move, and delete
@@ -39,11 +39,7 @@ async fn main() -> anyhow::Result<()> {
 - Webconsole execution for servers with the webconsole mod installed
 - Trigger create, list, and delete
 
-## Trigger Support
-
-Trigger management is currently Rust-only in this repository.
-
-This feature is not stable yet and will change in the future.
+Trigger management is not stable yet and will change in the future.
 
 ## Development
 
