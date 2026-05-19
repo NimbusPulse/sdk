@@ -54,6 +54,11 @@ export type BannedPlayer = {
 
 export type BillingType = "hourly" | "monthly";
 
+export type ChangeModsRequest = {
+  install_mods: Array<ModConfigType>;
+  uninstall_mods: Array<ModConfigType>;
+};
+
 export type ComparisonOperator =
   | "Equal"
   | "NotEqual"
@@ -288,6 +293,17 @@ export type KickPlayerRequest = { id: number; reason: string };
 export type KickPlayerResponse = boolean;
 
 export type MoveFileRequest = { source: string; destination: string };
+
+export type ModConfigType =
+  | "srs"
+  | "tacview"
+  | "olympus"
+  | "lotatc"
+  | "webconsole"
+  | "enhanced_metrics"
+  | "a_4e_c"
+  | "bronco_ov_10a"
+  | "real_weather";
 
 export type Permission =
   | "instance:view"

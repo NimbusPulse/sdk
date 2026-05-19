@@ -3,6 +3,7 @@ import type {
   BanPlayerRequest,
   BanPlayerResponse,
   BillingType,
+  ChangeModsRequest,
   CreateInstanceRequest,
   CreateTriggerRequest,
   DcsChatSafe,
@@ -17,6 +18,7 @@ import type {
   InstancesResponse,
   KickPlayerRequest,
   KickPlayerResponse,
+  ModConfigType,
   MoveFileRequest,
   Region,
   SendChatRequest,
@@ -312,6 +314,25 @@ export default class Client {
     await this.requestVoid(this.buildUrl(`/game_servers/${id}/reactivate`), {
       method: "POST",
     });
+  }
+
+  public async changeMods(
+    id: string,
+    request: ChangeModsRequest,
+  ): Promise<void> {
+    await this.requestVoid(this.buildUrl(`/game_servers/${id}/mods/change`), {
+      method: "PUT",
+      body: this.createJsonBody(request),
+    });
+  }
+
+  public async getMod(id: string, modId: ModConfigType): Promise<unknown> {
+    return await this.requestJson<unknown>(
+      this.buildUrl(`/game_servers/${id}/mods/${modId}`),
+      {
+        method: "GET",
+      },
+    );
   }
 
   public async getServerResources(
