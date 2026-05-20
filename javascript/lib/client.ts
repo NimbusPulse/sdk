@@ -34,6 +34,7 @@ import type {
   Trigger,
   WebConsoleExecuteRequest,
 } from "./types.ts";
+import type { Product } from "./products.ts";
 
 export type Fetch = {
   (input: URL | RequestInfo, init?: RequestInit | undefined): Promise<Response>;
@@ -166,7 +167,7 @@ export default class Client {
     region: Region,
     password: string | null,
     maxPlayers: number,
-    plan: string,
+    product: Product | string,
     activeMods: string[],
     terrains: Terrain[],
     useVoiceChat: boolean,
@@ -175,7 +176,7 @@ export default class Client {
     enableLfs: boolean,
   ): Promise<InstanceSafe> {
     const payload: CreateInstanceRequest = {
-      product_id: plan,
+      product_id: typeof product === "string" ? product : product.id,
       billing_type: billingType,
       region,
       active_mods: activeMods,
