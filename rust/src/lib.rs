@@ -25,6 +25,10 @@ pub use types::instance::{
     Terrain, UserResource,
 };
 pub use types::mods::{ChangeModsRequest, ModConfigType};
+pub use types::products::{
+    ACE_TIER, CADET_TIER, COMMANDER_TIER, PRODUCTS, Product, STRATEGIST_TIER, VETERAN_TIER,
+    WINGMAN_TIER, product_by_id,
+};
 pub use types::region::Region;
 pub use types::srs::{SrsClient, SrsModRequest, SrsServerInfo};
 pub use types::system_resources::{PrometheusSeries, ServerResourcesResponse};
@@ -127,7 +131,7 @@ impl Client {
         name: impl Into<String>,
         password: Option<impl Into<String>>,
         max_players: u32,
-        plan: Uuid,
+        product: impl Into<Uuid>,
         active_mods: Vec<impl Into<String>>,
         terrains: Vec<Terrain>,
         use_voice_chat: bool,
@@ -136,7 +140,7 @@ impl Client {
         enable_lfs: bool,
     ) -> Result<Instance> {
         let payload = CreateInstanceRequest {
-            product_id: plan,
+            product_id: product.into(),
             region,
             billing_type,
             settings: DcsSettingsPayload {

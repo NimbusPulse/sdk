@@ -9,6 +9,7 @@ pub mod dcs_settings;
 pub mod files;
 pub mod instance;
 pub mod mods;
+pub mod products;
 pub mod region;
 pub mod srs;
 pub mod system_resources;
