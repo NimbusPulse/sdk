@@ -134,7 +134,9 @@ pub enum InstanceStatus {
         is_post_creation: bool,
     },
     UninstallingMods,
-    InstallingPost,
+    InstallingPost {
+        is_post_creation: bool,
+    },
     UninstallingTerrains {
         want_uninstall: Vec<Terrain>,
         after_install: Vec<Terrain>,

@@ -257,7 +257,7 @@ export type InstanceStatus =
     }
   | { InstallingMods: { is_post_creation: boolean } }
   | "UninstallingMods"
-  | "InstallingPost"
+  | { InstallingPost: { is_post_creation: boolean } }
   | {
       UninstallingTerrains: {
         want_uninstall: Array<Terrain>;
