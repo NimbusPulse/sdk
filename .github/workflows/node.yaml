@@ -29,3 +29,18 @@ jobs:
       - name: Build
         run: npm run build
         working-directory: javascript
+
+  jsr-dry-run:
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Use Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: JSR publish dry run
+        run: deno publish --dry-run
+        working-directory: javascript
