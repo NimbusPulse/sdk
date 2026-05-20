@@ -6,7 +6,7 @@ TypeScript SDK for the NimbusPulse coordinator API.
 
 ### npm
 
-- Node.js `^24 || ^25`
+- Node.js `^24 || ^25 || ^26`
 
 ```bash
 npm install @nimbuspulse/client
