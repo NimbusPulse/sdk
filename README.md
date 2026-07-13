@@ -4,19 +4,13 @@ NimbusPulse provides SDKs for interacting with the NimbusPulse coordinator API f
 
 This repository currently contains:
 
-- `javascript/`: Node.js + TypeScript client published as `@nimbuspulse/client`
-- `rust/`: Rust client crate published as `nimbuspulse-client`
-
-## Repository Layout
-
-| Path          | Language             | Version |
-| ------------- | -------------------- | ------- |
-| `javascript/` | Node.js / TypeScript | `0.3.1` |
-| `rust/`       | Rust                 | `0.3.1` |
+- [`javascript/`](javascript/README.md): JavaScript and TypeScript client published as `@nimbuspulse/client`
+- [`rust/`](rust/README.md): Rust client published as `nimbuspulse-client`
+- [`c#/`](c%23/README.md): C# client for .NET 10
 
 ## Current API Coverage
 
-Both implementations cover:
+Across the SDKs, the repository currently covers:
 
 - Health checks
 - Server lifecycle management, including monthly subscription reactivation
@@ -33,12 +27,8 @@ Both implementations cover:
 - Webconsole execution for servers with the webconsole mod installed
 - Trigger create, list, and delete
 
-Trigger management is not stable yet and will change in the future.
-
-## Package-Specific Docs
-
-- JavaScript package docs: [`javascript/README.md`](javascript/README.md)
-- Rust package docs: [`rust/README.md`](rust/README.md)
+Trigger management is not stable yet and will change in the future. See each
+SDK's README for its exact current coverage.
 
 ## License
 
