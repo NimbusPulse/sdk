@@ -46,8 +46,8 @@
     "build": "npm run clean && tsc -p tsconfig.json"
   },
   "devDependencies": {
-    "@types/node": "^22.15",
-    "typescript": "^5.9",
-    "tsx": "4.21"
+    "@types/node": "^25",
+    "typescript": "^7.0",
+    "tsx": "4.23"
   }
 }
