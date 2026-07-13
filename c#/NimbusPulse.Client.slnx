@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="NimbusPulse.Client/NimbusPulse.Client.csproj" />
+  <Project Path="NimbusPulse.Client.Tests/NimbusPulse.Client.Tests.csproj" />
+</Solution>
