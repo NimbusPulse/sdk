@@ -12,13 +12,8 @@ if (string.IsNullOrWhiteSpace(apiKey))
 
 using var client = new Client(apiKey);
 
-Console.WriteLine("Checking NimbusPulse API health...");
-await client.HealthAsync();
-Console.WriteLine("Health: OK");
-
-Console.WriteLine("Fetching servers...");
+/*
 var servers = await client.GetServersAsync();
-Console.WriteLine($"Servers: {servers.Count}");
 
 foreach (var server in servers)
 {
@@ -27,7 +22,8 @@ foreach (var server in servers)
         : server.Domain;
 
     Console.WriteLine(
-        $"- {server.Id} | {server.DcsSettings} | {server.Status} | {endpoint}");
+        $"- {server.Id} - {server.DcsSettings} - {server.Status} - {endpoint}");
 }
+*/
 
 return 0;
