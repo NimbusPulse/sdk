@@ -73,7 +73,6 @@ export type CreateInstanceRequest = {
   billing_type: BillingType;
   settings: DcsSettingsPayload;
   active_mods: Array<string>;
-  wanted_terrains: Array<Terrain>;
 };
 
 export type CreateTriggerRequest = {
@@ -205,7 +204,6 @@ export type InstanceResource = {
   pid: number | null;
   status: InstanceStatus;
   want_delete: boolean;
-  wanted_terrains: Array<Terrain>;
   rented_at: number;
   rented_until: number | null;
   active_mods: Array<string>;
@@ -233,7 +231,6 @@ export type InstanceSafe = {
   pid: number | null;
   status: InstanceStatus;
   want_delete: boolean;
-  wanted_terrains: Array<Terrain>;
   rented_at: number;
   rented_until: number | null;
   active_mods: Array<string>;
@@ -245,27 +242,9 @@ export type InstanceSafe = {
 export type InstanceStatus =
   | "AwaitingContainer"
   | { InstallingBaseGame: { progress: number | null } }
-  | {
-      InstallingTerrains: {
-        installed: Array<Terrain>;
-        processing: Terrain | null;
-        processing_progress: number | null;
-        /**
-         * If true, this is a post-creation terrain change and should return to ServerStopped after completion
-         * If false, this is initial installation and should continue to InstallingMods
-         */
-        is_post_creation: boolean;
-      };
-    }
   | { InstallingMods: { is_post_creation: boolean } }
   | "UninstallingMods"
   | { InstallingPost: { is_post_creation: boolean } }
-  | {
-      UninstallingTerrains: {
-        want_uninstall: Array<Terrain>;
-        after_install: Array<Terrain>;
-      };
-    }
   | "ServerStarted"
   | { ServerStopped: { was_error: boolean; reason: InstanceStoppedReason } }
   | "ServerExpired"
@@ -402,22 +381,6 @@ export type StartServerResponse = {
   mission_list: GetMissionListResponse;
   res: number;
 };
-
-export type Terrain =
-  | "Afghanistan"
-  | "Caucasus"
-  | "Falklands"
-  | "Iraq"
-  | "Kola"
-  | "MarianaIslands"
-  | "MarianaIslandsWWII"
-  | "Nevada"
-  | "Normandy"
-  | "PersianGulf"
-  | "Sinai"
-  | "Syria"
-  | "TheChannel"
-  | "GermanyCW";
 
 export type Trigger = {
   id: string | null;

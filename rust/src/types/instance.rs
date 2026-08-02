@@ -29,7 +29,6 @@ pub struct Instance {
     pub pid: Option<i32>,
     pub status: InstanceStatus,
     pub want_delete: bool,
-    pub wanted_terrains: Vec<Terrain>,
     pub rented_at: i64,
     pub rented_until: Option<i64>,
     pub active_mods: Vec<String>,
@@ -61,24 +60,6 @@ pub type InstancesResponse = Vec<InstanceResource>;
 #[serde(untagged)]
 pub enum GameRuntime {
     Dcs(DcsRuntime),
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
-pub enum Terrain {
-    Afghanistan,
-    Caucasus,
-    Falklands,
-    Iraq,
-    Kola,
-    MarianaIslands,
-    MarianaIslandsWWII,
-    Nevada,
-    Normandy,
-    PersianGulf,
-    Sinai,
-    Syria,
-    TheChannel,
-    GermanyCW,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
@@ -125,22 +106,12 @@ pub enum InstanceStatus {
     InstallingBaseGame {
         progress: Option<u8>,
     },
-    InstallingTerrains {
-        installed: Vec<Terrain>,
-        processing: Option<Terrain>,
-        processing_progress: Option<u8>,
-        is_post_creation: bool,
-    },
     InstallingMods {
         is_post_creation: bool,
     },
     UninstallingMods,
     InstallingPost {
         is_post_creation: bool,
-    },
-    UninstallingTerrains {
-        want_uninstall: Vec<Terrain>,
-        after_install: Vec<Terrain>,
     },
     ServerStarted,
     ServerStopped {

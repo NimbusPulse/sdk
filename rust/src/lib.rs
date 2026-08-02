@@ -133,7 +133,6 @@ impl Client {
         max_players: u32,
         product: impl Into<Uuid>,
         active_mods: Vec<impl Into<String>>,
-        terrains: Vec<Terrain>,
         use_voice_chat: bool,
         enable_io: bool,
         enable_os: bool,
@@ -153,7 +152,6 @@ impl Client {
                 enable_lfs,
             },
             active_mods: active_mods.into_iter().map(|m| m.into()).collect(),
-            wanted_terrains: terrains,
         };
 
         self.send_json(

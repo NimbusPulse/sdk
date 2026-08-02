@@ -30,7 +30,6 @@ import type {
   SrsServerInfo,
   StartMissionResponse,
   StartServerResponse,
-  Terrain,
   Trigger,
   WebConsoleExecuteRequest,
 } from "./types.ts";
@@ -169,7 +168,6 @@ export default class Client {
     maxPlayers: number,
     product: Product | string,
     activeMods: string[],
-    terrains: Terrain[],
     useVoiceChat: boolean,
     enableIo: boolean,
     enableOs: boolean,
@@ -180,7 +178,6 @@ export default class Client {
       billing_type: billingType,
       region,
       active_mods: activeMods,
-      wanted_terrains: terrains,
       settings: {
         initial_server_name: name,
         initial_server_password: password ?? "",
