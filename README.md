@@ -11,8 +11,8 @@ This repository currently contains:
 
 | Path          | Language             | Version |
 | ------------- | -------------------- | ------- |
-| `javascript/` | Node.js / TypeScript | `0.3.1` |
-| `rust/`       | Rust                 | `0.3.1` |
+| `javascript/` | Node.js / TypeScript | `0.3.2` |
+| `rust/`       | Rust                 | `0.3.2` |
 
 ## Current API Coverage
 
