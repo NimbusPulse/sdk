@@ -18,6 +18,7 @@ pub struct Instance {
     pub node_id: Uuid,
     pub user_id: Uuid,
     pub product_id: Uuid,
+    pub log_session_id: Option<Uuid>,
     pub game_type: GameType,
     pub billing_type: BillingType,
     pub port: i32,
@@ -28,11 +29,13 @@ pub struct Instance {
     pub pid: Option<i32>,
     pub status: InstanceStatus,
     pub want_delete: bool,
-    pub wanted_terrains: Vec<Terrain>,
     pub rented_at: i64,
     pub rented_until: Option<i64>,
     pub active_mods: Vec<String>,
     pub subscription_cancel_at_period_end: bool,
+    pub subscription_overdue: bool,
+    pub subscription_next_payment_attempt: Option<i64>,
+    pub subscription_next_payment_url: Option<String>,
     pub created_at: String,
     pub dcs_settings: Option<DcsSettings>,
 }
@@ -60,24 +63,6 @@ pub type InstancesResponse = Vec<InstanceResource>;
 #[serde(untagged)]
 pub enum GameRuntime {
     Dcs(DcsRuntime),
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
-pub enum Terrain {
-    Afghanistan,
-    Caucasus,
-    Falklands,
-    Iraq,
-    Kola,
-    MarianaIslands,
-    MarianaIslandsWWII,
-    Nevada,
-    Normandy,
-    PersianGulf,
-    Sinai,
-    Syria,
-    TheChannel,
-    GermanyCW,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
@@ -124,22 +109,12 @@ pub enum InstanceStatus {
     InstallingBaseGame {
         progress: Option<u8>,
     },
-    InstallingTerrains {
-        installed: Vec<Terrain>,
-        processing: Option<Terrain>,
-        processing_progress: Option<u8>,
-        is_post_creation: bool,
-    },
     InstallingMods {
         is_post_creation: bool,
     },
     UninstallingMods,
     InstallingPost {
         is_post_creation: bool,
-    },
-    UninstallingTerrains {
-        want_uninstall: Vec<Terrain>,
-        after_install: Vec<Terrain>,
     },
     ServerStarted,
     ServerStopped {

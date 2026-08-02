@@ -5,12 +5,14 @@ import type {
   BillingType,
   ChangeModsRequest,
   CreateInstanceRequest,
+  CreateInstanceResponse,
   CreateTriggerRequest,
   DcsChatSafe,
   DcsRuntimeSafe,
   DeleteMissionsResponse,
   EditInstanceRequest,
   FileListResponse,
+  GameServerLogsResponse,
   GetPauseServerResponse,
   GetResumeServerResponse,
   InstanceResource,
@@ -30,7 +32,6 @@ import type {
   SrsServerInfo,
   StartMissionResponse,
   StartServerResponse,
-  Terrain,
   Trigger,
   WebConsoleExecuteRequest,
 } from "./types.ts";
@@ -169,18 +170,17 @@ export default class Client {
     maxPlayers: number,
     product: Product | string,
     activeMods: string[],
-    terrains: Terrain[],
     useVoiceChat: boolean,
     enableIo: boolean,
     enableOs: boolean,
     enableLfs: boolean,
-  ): Promise<InstanceSafe> {
+    allowExternalLoading: boolean,
+  ): Promise<CreateInstanceResponse> {
     const payload: CreateInstanceRequest = {
       product_id: typeof product === "string" ? product : product.id,
       billing_type: billingType,
       region,
       active_mods: activeMods,
-      wanted_terrains: terrains,
       settings: {
         initial_server_name: name,
         initial_server_password: password ?? "",
@@ -189,10 +189,11 @@ export default class Client {
         enable_io: enableIo,
         enable_os: enableOs,
         enable_lfs: enableLfs,
+        allow_external_loading: allowExternalLoading,
       },
     };
 
-    return await this.requestJson<InstanceSafe>(
+    return await this.requestJson<CreateInstanceResponse>(
       this.buildUrl("/game_servers"),
       {
         method: "POST",
@@ -241,14 +242,16 @@ export default class Client {
     );
   }
 
-  public async changeServerTerrains(
+  public async getServerLogs(
     id: string,
-    terrains: Terrain[],
-  ): Promise<void> {
-    await this.requestVoid(this.buildUrl(`/game_servers/${id}/terrains`), {
-      method: "PUT",
-      body: this.createJsonBody(terrains),
-    });
+    lastTimestamp?: string | null,
+  ): Promise<GameServerLogsResponse> {
+    return await this.requestJson<GameServerLogsResponse>(
+      this.buildUrl(`/game_servers/${id}/logs`, {
+        last_timestamp: lastTimestamp,
+      }),
+      { method: "GET" },
+    );
   }
 
   public async getChat(id: string): Promise<DcsChatSafe[]> {

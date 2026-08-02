@@ -22,8 +22,9 @@ pub use types::files::{
 pub use types::instance::{
     ApiError, GameRuntime, GameType, Instance, InstanceNodeResource, InstancePermissions,
     InstanceResource, InstanceStatus, InstanceStoppedReason, InstancesResponse, Permission,
-    Terrain, UserResource,
+    UserResource,
 };
+pub use types::logs::{GameServerLogRow, GameServerLogsResponse, InstanceLogRequest};
 pub use types::mods::{ChangeModsRequest, ModConfigType};
 pub use types::products::{
     ACE_TIER, CADET_TIER, COMMANDER_TIER, PRODUCTS, Product, STRATEGIST_TIER, VETERAN_TIER,
@@ -53,7 +54,18 @@ pub struct CreateInstanceRequest {
     pub billing_type: BillingType,
     pub settings: DcsSettingsPayload,
     pub active_mods: Vec<String>,
-    pub wanted_terrains: Vec<Terrain>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct CreateInstanceMonthlyResponse {
+    pub url: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(untagged)]
+pub enum CreateInstanceResponse {
+    Hourly(Instance),
+    Monthly(CreateInstanceMonthlyResponse),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -133,12 +145,12 @@ impl Client {
         max_players: u32,
         product: impl Into<Uuid>,
         active_mods: Vec<impl Into<String>>,
-        terrains: Vec<Terrain>,
         use_voice_chat: bool,
         enable_io: bool,
         enable_os: bool,
         enable_lfs: bool,
-    ) -> Result<Instance> {
+        allow_external_loading: bool,
+    ) -> Result<CreateInstanceResponse> {
         let payload = CreateInstanceRequest {
             product_id: product.into(),
             region,
@@ -151,9 +163,9 @@ impl Client {
                 enable_io,
                 enable_os,
                 enable_lfs,
+                allow_external_loading,
             },
             active_mods: active_mods.into_iter().map(|m| m.into()).collect(),
-            wanted_terrains: terrains,
         };
 
         self.send_json(
@@ -225,12 +237,15 @@ impl Client {
         .await
     }
 
-    pub async fn change_server_terrains(&self, id: &Uuid, terrains: &[Terrain]) -> Result<()> {
-        self.send_unit(
+    pub async fn get_server_logs(
+        &self,
+        id: &Uuid,
+        request: &InstanceLogRequest,
+    ) -> Result<GameServerLogsResponse> {
+        self.send_json(
             self.reqwest_client
-                .put(format!("{}/game_servers/{}/terrains", Self::BASE_URL, id))
-                .json(terrains),
-            "failed to change terrains",
+                .get(format!("{}/game_servers/{}/logs", Self::BASE_URL, id))
+                .query(request),
         )
         .await
     }

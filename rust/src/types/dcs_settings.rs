@@ -8,6 +8,7 @@ pub struct DcsSettingsPayload {
     pub enable_io: bool,
     pub enable_os: bool,
     pub enable_lfs: bool,
+    pub allow_external_loading: bool,
     pub initial_use_voice_chat: bool,
 }
 
@@ -16,6 +17,7 @@ pub struct DcsSettingsUpdatePayload {
     pub enable_io: bool,
     pub enable_os: bool,
     pub enable_lfs: bool,
+    pub allow_external_loading: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -26,5 +28,6 @@ pub struct DcsSettings {
     pub enable_io: bool,
     pub enable_os: bool,
     pub enable_lfs: bool,
+    pub allow_external_loading: bool,
     pub initial_use_voice_chat: bool,
 }

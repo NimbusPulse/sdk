@@ -73,8 +73,13 @@ export type CreateInstanceRequest = {
   billing_type: BillingType;
   settings: DcsSettingsPayload;
   active_mods: Array<string>;
-  wanted_terrains: Array<Terrain>;
 };
+
+export type CreateInstanceMonthlyResponse = { url: string };
+
+export type CreateInstanceResponse =
+  | InstanceSafe
+  | CreateInstanceMonthlyResponse;
 
 export type CreateTriggerRequest = {
   name: string;
@@ -118,6 +123,7 @@ export type DcsSettingsPayload = {
   enable_io: boolean;
   enable_os: boolean;
   enable_lfs: boolean;
+  allow_external_loading: boolean;
   initial_use_voice_chat: boolean;
 };
 
@@ -128,6 +134,7 @@ export type DcsSettingsSafe = {
   enable_io: boolean;
   enable_os: boolean;
   enable_lfs: boolean;
+  allow_external_loading: boolean;
   initial_use_voice_chat: boolean;
 };
 
@@ -135,6 +142,7 @@ export type DcsSettingsUpdatePayload = {
   enable_io: boolean;
   enable_os: boolean;
   enable_lfs: boolean;
+  allow_external_loading: boolean;
 };
 
 export type DeleteMissionsResponse = {
@@ -158,6 +166,19 @@ export type FileInfo = {
 export type FileListResponse = { files: Array<FileInfo>; current_path: string };
 
 export type GameRuntime = DcsRuntimeSafe;
+
+export type GameServerLogRow = {
+  html: string;
+  level: string | null;
+  module: string | null;
+};
+
+export type GameServerLogsResponse = {
+  html_rows: Array<GameServerLogRow>;
+  last_timestamp: string;
+  error_levels: Record<string, number>;
+  modules: Array<string>;
+};
 
 export type GameType = "dcs";
 
@@ -194,6 +215,7 @@ export type InstanceResource = {
   node_id: string;
   user_id: string;
   product_id: string;
+  log_session_id: string | null;
   game_type: GameType;
   billing_type: BillingType;
   port: number;
@@ -204,11 +226,13 @@ export type InstanceResource = {
   pid: number | null;
   status: InstanceStatus;
   want_delete: boolean;
-  wanted_terrains: Array<Terrain>;
   rented_at: number;
   rented_until: number | null;
   active_mods: Array<string>;
   subscription_cancel_at_period_end: boolean;
+  subscription_overdue: boolean;
+  subscription_next_payment_attempt: bigint | null;
+  subscription_next_payment_url: string | null;
   created_at: string;
   dcs_settings: DcsSettingsSafe | null;
   region: Region;
@@ -221,6 +245,7 @@ export type InstanceSafe = {
   node_id: string;
   user_id: string;
   product_id: string;
+  log_session_id: string | null;
   game_type: GameType;
   billing_type: BillingType;
   port: number;
@@ -231,11 +256,13 @@ export type InstanceSafe = {
   pid: number | null;
   status: InstanceStatus;
   want_delete: boolean;
-  wanted_terrains: Array<Terrain>;
   rented_at: number;
   rented_until: number | null;
   active_mods: Array<string>;
   subscription_cancel_at_period_end: boolean;
+  subscription_overdue: boolean;
+  subscription_next_payment_attempt: bigint | null;
+  subscription_next_payment_url: string | null;
   created_at: string;
   dcs_settings: DcsSettingsSafe | null;
 };
@@ -243,27 +270,9 @@ export type InstanceSafe = {
 export type InstanceStatus =
   | "AwaitingContainer"
   | { InstallingBaseGame: { progress: number | null } }
-  | {
-      InstallingTerrains: {
-        installed: Array<Terrain>;
-        processing: Terrain | null;
-        processing_progress: number | null;
-        /**
-         * If true, this is a post-creation terrain change and should return to ServerStopped after completion
-         * If false, this is initial installation and should continue to InstallingMods
-         */
-        is_post_creation: boolean;
-      };
-    }
   | { InstallingMods: { is_post_creation: boolean } }
   | "UninstallingMods"
   | { InstallingPost: { is_post_creation: boolean } }
-  | {
-      UninstallingTerrains: {
-        want_uninstall: Array<Terrain>;
-        after_install: Array<Terrain>;
-      };
-    }
   | "ServerStarted"
   | { ServerStopped: { was_error: boolean; reason: InstanceStoppedReason } }
   | "ServerExpired"
@@ -303,7 +312,9 @@ export type ModConfigType =
   | "enhanced_metrics"
   | "a_4e_c"
   | "bronco_ov_10a"
-  | "real_weather";
+  | "real_weather"
+  | "sr_ea_proxy"
+  | "aerosimics";
 
 export type Permission =
   | "instance:view"
@@ -400,22 +411,6 @@ export type StartServerResponse = {
   mission_list: GetMissionListResponse;
   res: number;
 };
-
-export type Terrain =
-  | "Afghanistan"
-  | "Caucasus"
-  | "Falklands"
-  | "Iraq"
-  | "Kola"
-  | "MarianaIslands"
-  | "MarianaIslandsWWII"
-  | "Nevada"
-  | "Normandy"
-  | "PersianGulf"
-  | "Sinai"
-  | "Syria"
-  | "TheChannel"
-  | "GermanyCW";
 
 export type Trigger = {
   id: string | null;
