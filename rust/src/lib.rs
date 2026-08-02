@@ -137,7 +137,8 @@ impl Client {
         enable_io: bool,
         enable_os: bool,
         enable_lfs: bool,
-    ) -> Result<Instance> {
+        allow_external_loading: bool,
+    ) -> Result<CreateInstanceResponse> {
         let payload = CreateInstanceRequest {
             product_id: product.into(),
             region,
@@ -150,6 +151,7 @@ impl Client {
                 enable_io,
                 enable_os,
                 enable_lfs,
+                allow_external_loading,
             },
             active_mods: active_mods.into_iter().map(|m| m.into()).collect(),
         };

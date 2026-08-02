@@ -117,6 +117,7 @@ export type DcsSettingsPayload = {
   enable_io: boolean;
   enable_os: boolean;
   enable_lfs: boolean;
+  allow_external_loading: boolean;
   initial_use_voice_chat: boolean;
 };
 
@@ -127,6 +128,7 @@ export type DcsSettingsSafe = {
   enable_io: boolean;
   enable_os: boolean;
   enable_lfs: boolean;
+  allow_external_loading: boolean;
   initial_use_voice_chat: boolean;
 };
 
@@ -134,6 +136,7 @@ export type DcsSettingsUpdatePayload = {
   enable_io: boolean;
   enable_os: boolean;
   enable_lfs: boolean;
+  allow_external_loading: boolean;
 };
 
 export type DeleteMissionsResponse = {

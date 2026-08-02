@@ -172,7 +172,8 @@ export default class Client {
     enableIo: boolean,
     enableOs: boolean,
     enableLfs: boolean,
-  ): Promise<InstanceSafe> {
+    allowExternalLoading: boolean,
+  ): Promise<CreateInstanceResponse> {
     const payload: CreateInstanceRequest = {
       product_id: typeof product === "string" ? product : product.id,
       billing_type: billingType,
@@ -186,6 +187,7 @@ export default class Client {
         enable_io: enableIo,
         enable_os: enableOs,
         enable_lfs: enableLfs,
+        allow_external_loading: allowExternalLoading,
       },
     };
 
