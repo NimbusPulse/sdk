@@ -26,6 +26,10 @@ pub enum ModConfigType {
     BroncoOv10a,
     #[serde(rename = "real_weather")]
     RealWeather,
+    #[serde(rename = "sr_ea_proxy")]
+    SrEaProxy,
+    #[serde(rename = "aerosimics")]
+    Aerosimics,
 }
 
 impl ModConfigType {
@@ -40,6 +44,8 @@ impl ModConfigType {
             Self::A4Ec => "a_4e_c",
             Self::BroncoOv10a => "bronco_ov_10a",
             Self::RealWeather => "real_weather",
+            Self::SrEaProxy => "sr_ea_proxy",
+            Self::Aerosimics => "aerosimics",
         }
     }
 }

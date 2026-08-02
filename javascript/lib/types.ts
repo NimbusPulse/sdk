@@ -312,7 +312,9 @@ export type ModConfigType =
   | "enhanced_metrics"
   | "a_4e_c"
   | "bronco_ov_10a"
-  | "real_weather";
+  | "real_weather"
+  | "sr_ea_proxy"
+  | "aerosimics";
 
 export type Permission =
   | "instance:view"
