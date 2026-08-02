@@ -33,6 +33,9 @@ pub struct Instance {
     pub rented_until: Option<i64>,
     pub active_mods: Vec<String>,
     pub subscription_cancel_at_period_end: bool,
+    pub subscription_overdue: bool,
+    pub subscription_next_payment_attempt: Option<i64>,
+    pub subscription_next_payment_url: Option<String>,
     pub created_at: String,
     pub dcs_settings: Option<DcsSettings>,
 }

@@ -208,6 +208,9 @@ export type InstanceResource = {
   rented_until: number | null;
   active_mods: Array<string>;
   subscription_cancel_at_period_end: boolean;
+  subscription_overdue: boolean;
+  subscription_next_payment_attempt: bigint | null;
+  subscription_next_payment_url: string | null;
   created_at: string;
   dcs_settings: DcsSettingsSafe | null;
   region: Region;
@@ -235,6 +238,9 @@ export type InstanceSafe = {
   rented_until: number | null;
   active_mods: Array<string>;
   subscription_cancel_at_period_end: boolean;
+  subscription_overdue: boolean;
+  subscription_next_payment_attempt: bigint | null;
+  subscription_next_payment_url: string | null;
   created_at: string;
   dcs_settings: DcsSettingsSafe | null;
 };
