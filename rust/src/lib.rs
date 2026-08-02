@@ -24,6 +24,7 @@ pub use types::instance::{
     InstanceResource, InstanceStatus, InstanceStoppedReason, InstancesResponse, Permission,
     UserResource,
 };
+pub use types::logs::{GameServerLogRow, GameServerLogsResponse, InstanceLogRequest};
 pub use types::mods::{ChangeModsRequest, ModConfigType};
 pub use types::products::{
     ACE_TIER, CADET_TIER, COMMANDER_TIER, PRODUCTS, Product, STRATEGIST_TIER, VETERAN_TIER,
@@ -53,7 +54,18 @@ pub struct CreateInstanceRequest {
     pub billing_type: BillingType,
     pub settings: DcsSettingsPayload,
     pub active_mods: Vec<String>,
-    pub wanted_terrains: Vec<Terrain>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct CreateInstanceMonthlyResponse {
+    pub url: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(untagged)]
+pub enum CreateInstanceResponse {
+    Hourly(Instance),
+    Monthly(CreateInstanceMonthlyResponse),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]

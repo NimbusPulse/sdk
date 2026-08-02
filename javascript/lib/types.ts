@@ -75,6 +75,12 @@ export type CreateInstanceRequest = {
   active_mods: Array<string>;
 };
 
+export type CreateInstanceMonthlyResponse = { url: string };
+
+export type CreateInstanceResponse =
+  | InstanceSafe
+  | CreateInstanceMonthlyResponse;
+
 export type CreateTriggerRequest = {
   name: string;
   description: string | null;
@@ -160,6 +166,19 @@ export type FileInfo = {
 export type FileListResponse = { files: Array<FileInfo>; current_path: string };
 
 export type GameRuntime = DcsRuntimeSafe;
+
+export type GameServerLogRow = {
+  html: string;
+  level: string | null;
+  module: string | null;
+};
+
+export type GameServerLogsResponse = {
+  html_rows: Array<GameServerLogRow>;
+  last_timestamp: string;
+  error_levels: Record<string, number>;
+  modules: Array<string>;
+};
 
 export type GameType = "dcs";
 

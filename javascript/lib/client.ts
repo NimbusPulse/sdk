@@ -5,12 +5,14 @@ import type {
   BillingType,
   ChangeModsRequest,
   CreateInstanceRequest,
+  CreateInstanceResponse,
   CreateTriggerRequest,
   DcsChatSafe,
   DcsRuntimeSafe,
   DeleteMissionsResponse,
   EditInstanceRequest,
   FileListResponse,
+  GameServerLogsResponse,
   GetPauseServerResponse,
   GetResumeServerResponse,
   InstanceResource,
@@ -191,7 +193,7 @@ export default class Client {
       },
     };
 
-    return await this.requestJson<InstanceSafe>(
+    return await this.requestJson<CreateInstanceResponse>(
       this.buildUrl("/game_servers"),
       {
         method: "POST",
