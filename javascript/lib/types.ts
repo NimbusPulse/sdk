@@ -194,6 +194,7 @@ export type InstanceResource = {
   node_id: string;
   user_id: string;
   product_id: string;
+  log_session_id: string | null;
   game_type: GameType;
   billing_type: BillingType;
   port: number;
@@ -221,6 +222,7 @@ export type InstanceSafe = {
   node_id: string;
   user_id: string;
   product_id: string;
+  log_session_id: string | null;
   game_type: GameType;
   billing_type: BillingType;
   port: number;

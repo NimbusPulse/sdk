@@ -8,6 +8,7 @@ pub mod dcs_runtime;
 pub mod dcs_settings;
 pub mod files;
 pub mod instance;
+pub mod logs;
 pub mod mods;
 pub mod products;
 pub mod region;

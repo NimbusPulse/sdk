@@ -22,7 +22,7 @@ pub use types::files::{
 pub use types::instance::{
     ApiError, GameRuntime, GameType, Instance, InstanceNodeResource, InstancePermissions,
     InstanceResource, InstanceStatus, InstanceStoppedReason, InstancesResponse, Permission,
-    Terrain, UserResource,
+    UserResource,
 };
 pub use types::mods::{ChangeModsRequest, ModConfigType};
 pub use types::products::{
@@ -225,12 +225,15 @@ impl Client {
         .await
     }
 
-    pub async fn change_server_terrains(&self, id: &Uuid, terrains: &[Terrain]) -> Result<()> {
-        self.send_unit(
+    pub async fn get_server_logs(
+        &self,
+        id: &Uuid,
+        request: &InstanceLogRequest,
+    ) -> Result<GameServerLogsResponse> {
+        self.send_json(
             self.reqwest_client
-                .put(format!("{}/game_servers/{}/terrains", Self::BASE_URL, id))
-                .json(terrains),
-            "failed to change terrains",
+                .get(format!("{}/game_servers/{}/logs", Self::BASE_URL, id))
+                .query(request),
         )
         .await
     }

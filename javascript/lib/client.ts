@@ -241,14 +241,16 @@ export default class Client {
     );
   }
 
-  public async changeServerTerrains(
+  public async getServerLogs(
     id: string,
-    terrains: Terrain[],
-  ): Promise<void> {
-    await this.requestVoid(this.buildUrl(`/game_servers/${id}/terrains`), {
-      method: "PUT",
-      body: this.createJsonBody(terrains),
-    });
+    lastTimestamp?: string | null,
+  ): Promise<GameServerLogsResponse> {
+    return await this.requestJson<GameServerLogsResponse>(
+      this.buildUrl(`/game_servers/${id}/logs`, {
+        last_timestamp: lastTimestamp,
+      }),
+      { method: "GET" },
+    );
   }
 
   public async getChat(id: string): Promise<DcsChatSafe[]> {

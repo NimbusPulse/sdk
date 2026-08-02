@@ -18,6 +18,7 @@ pub struct Instance {
     pub node_id: Uuid,
     pub user_id: Uuid,
     pub product_id: Uuid,
+    pub log_session_id: Option<Uuid>,
     pub game_type: GameType,
     pub billing_type: BillingType,
     pub port: i32,
