@@ -52,6 +52,7 @@ pub struct CreateInstanceRequest {
     pub product_id: Uuid,
     pub region: Region,
     pub billing_type: BillingType,
+    pub partner_code: Option<String>,
     pub settings: DcsSettingsPayload,
     pub active_mods: Vec<String>,
 }
@@ -150,11 +151,13 @@ impl Client {
         enable_os: bool,
         enable_lfs: bool,
         allow_external_loading: bool,
+        partner_code: Option<String>,
     ) -> Result<CreateInstanceResponse> {
         let payload = CreateInstanceRequest {
             product_id: product.into(),
             region,
             billing_type,
+            partner_code,
             settings: DcsSettingsPayload {
                 initial_server_name: name.into(),
                 initial_server_password: password.map(|p| p.into()).unwrap_or_default(),

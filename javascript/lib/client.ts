@@ -175,10 +175,12 @@ export default class Client {
     enableOs: boolean,
     enableLfs: boolean,
     allowExternalLoading: boolean,
+    partnerCode: string | null = null,
   ): Promise<CreateInstanceResponse> {
     const payload: CreateInstanceRequest = {
       product_id: typeof product === "string" ? product : product.id,
       billing_type: billingType,
+      partner_code: partnerCode,
       region,
       active_mods: activeMods,
       settings: {

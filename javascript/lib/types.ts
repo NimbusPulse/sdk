@@ -71,6 +71,7 @@ export type CreateInstanceRequest = {
   region: Region;
   product_id: string;
   billing_type: BillingType;
+  partner_code: string | null;
   settings: DcsSettingsPayload;
   active_mods: Array<string>;
 };
