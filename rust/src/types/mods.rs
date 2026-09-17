@@ -30,6 +30,8 @@ pub enum ModConfigType {
     SrEaProxy,
     #[serde(rename = "aerosimics")]
     Aerosimics,
+    #[serde(rename = "aerosimics_atc_abm")]
+    AerosimicsAtcAbm,
 }
 
 impl ModConfigType {
@@ -46,6 +48,7 @@ impl ModConfigType {
             Self::RealWeather => "real_weather",
             Self::SrEaProxy => "sr_ea_proxy",
             Self::Aerosimics => "aerosimics",
+            Self::AerosimicsAtcAbm => "aerosimics_atc_abm",
         }
     }
 }
