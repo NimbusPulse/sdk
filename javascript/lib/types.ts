@@ -36,7 +36,7 @@ export type BanPlayerRequest = {
   id: number;
   reason: string;
   ucid: string;
-  period: bigint;
+  period: number;
 };
 
 export type BanPlayerResponse = boolean;
@@ -95,7 +95,7 @@ export type DcsChatSafe = {
   player_name: string;
   message: string;
   is_historical: boolean;
-  unix_time: bigint;
+  unix_time: number;
 };
 
 export type DcsRuntimeSafe = {
@@ -232,7 +232,7 @@ export type InstanceResource = {
   active_mods: Array<string>;
   subscription_cancel_at_period_end: boolean;
   subscription_overdue: boolean;
-  subscription_next_payment_attempt: bigint | null;
+  subscription_next_payment_attempt: number | null;
   subscription_next_payment_url: string | null;
   created_at: string;
   dcs_settings: DcsSettingsSafe | null;
@@ -262,7 +262,7 @@ export type InstanceSafe = {
   active_mods: Array<string>;
   subscription_cancel_at_period_end: boolean;
   subscription_overdue: boolean;
-  subscription_next_payment_attempt: bigint | null;
+  subscription_next_payment_attempt: number | null;
   subscription_next_payment_url: string | null;
   created_at: string;
   dcs_settings: DcsSettingsSafe | null;
