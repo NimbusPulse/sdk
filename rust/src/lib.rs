@@ -17,7 +17,7 @@ pub use types::dcs_runtime::{
 };
 pub use types::dcs_settings::{DcsSettings, DcsSettingsPayload, DcsSettingsUpdatePayload};
 pub use types::files::{
-    FileDownloadResponse, FileInfo, FileListResponse, FileUploadRequest, MoveFileRequest,
+    FileDownloadResponse, FileInfo, FileListResponse, FileUploadRequest, FmRoot, MoveFileRequest,
 };
 pub use types::instance::{
     ApiError, GameRuntime, GameType, Instance, InstanceNodeResource, InstancePermissions,
@@ -32,7 +32,9 @@ pub use types::products::{
 };
 pub use types::region::Region;
 pub use types::srs::{SrsClient, SrsModRequest, SrsServerInfo};
-pub use types::system_resources::{PrometheusSeries, ServerResourcesResponse};
+pub use types::system_resources::{
+    PrometheusSeries, ResourceKind, ResourceUsage, ServerResourcesResponse,
+};
 pub use types::system_resources_periode::SystemResourcesPeriod;
 pub use types::triggers::{
     ComparisonOperator, CreateTriggerRequest, Trigger, TriggerAction, TriggerCondition,
@@ -42,6 +44,7 @@ pub use types::webconsole::WebConsoleExecuteRequest;
 use reqwest::multipart::{Form, Part};
 use tokio::fs::File;
 use tokio::io::AsyncWriteExt;
+use types::files::FilePathQuery;
 
 pub use uuid::Uuid;
 
@@ -349,24 +352,40 @@ impl Client {
         .await
     }
 
-    pub async fn list_files(&self, id: &Uuid, path: impl Into<String>) -> Result<FileListResponse> {
-        self.send_json(self.reqwest_client.get(format!(
-            "{}/game_servers/{}/files?path={}",
-            Self::BASE_URL,
-            id,
-            path.into()
-        )))
+    pub async fn list_files(
+        &self,
+        id: &Uuid,
+        root: FmRoot,
+        path: impl Into<String>,
+    ) -> Result<FileListResponse> {
+        self.send_json(
+            self.reqwest_client
+                .get(format!("{}/game_servers/{}/files", Self::BASE_URL, id))
+                .query(&FilePathQuery {
+                    root,
+                    path: path.into(),
+                }),
+        )
         .await
     }
 
-    pub async fn create_directory(&self, id: &Uuid, path: impl Into<String>) -> Result<()> {
+    pub async fn create_directory(
+        &self,
+        id: &Uuid,
+        root: FmRoot,
+        path: impl Into<String>,
+    ) -> Result<()> {
         self.send_unit(
-            self.reqwest_client.post(format!(
-                "{}/game_servers/{}/files/directory?path={}",
-                Self::BASE_URL,
-                id,
-                path.into()
-            )),
+            self.reqwest_client
+                .post(format!(
+                    "{}/game_servers/{}/files/directory",
+                    Self::BASE_URL,
+                    id
+                ))
+                .query(&FilePathQuery {
+                    root,
+                    path: path.into(),
+                }),
             "failed to create directory",
         )
         .await
@@ -375,6 +394,7 @@ impl Client {
     pub async fn upload_file(
         &self,
         id: &Uuid,
+        root: FmRoot,
         path: impl Into<String>,
         file: Vec<u8>,
     ) -> Result<()> {
@@ -386,11 +406,14 @@ impl Client {
         self.send_unit(
             self.reqwest_client
                 .post(format!(
-                    "{}/game_servers/{}/files/upload?path={}",
+                    "{}/game_servers/{}/files/upload",
                     Self::BASE_URL,
-                    id,
-                    path.into()
+                    id
                 ))
+                .query(&FilePathQuery {
+                    root,
+                    path: path.into(),
+                })
                 .multipart(form),
             "failed to upload file",
         )
@@ -400,6 +423,7 @@ impl Client {
     pub async fn upload_file_from(
         &self,
         id: &Uuid,
+        root: FmRoot,
         path: impl Into<String>,
         file: impl Into<PathBuf>,
     ) -> Result<()> {
@@ -408,25 +432,39 @@ impl Client {
         self.send_unit(
             self.reqwest_client
                 .post(format!(
-                    "{}/game_servers/{}/files/upload?path={}",
+                    "{}/game_servers/{}/files/upload",
                     Self::BASE_URL,
-                    id,
-                    path.into()
+                    id
                 ))
+                .query(&FilePathQuery {
+                    root,
+                    path: path.into(),
+                })
                 .multipart(form),
             "failed to upload file",
         )
         .await
     }
 
-    pub async fn download_file(&self, id: &Uuid, path: impl Into<String>) -> Result<Vec<u8>> {
+    pub async fn download_file(
+        &self,
+        id: &Uuid,
+        root: FmRoot,
+        path: impl Into<String>,
+    ) -> Result<Vec<u8>> {
         let response = self
-            .send(self.reqwest_client.get(format!(
-                "{}/game_servers/{}/files/download?path={}",
-                Self::BASE_URL,
-                id,
-                path.into()
-            )))
+            .send(
+                self.reqwest_client
+                    .get(format!(
+                        "{}/game_servers/{}/files/download",
+                        Self::BASE_URL,
+                        id
+                    ))
+                    .query(&FilePathQuery {
+                        root,
+                        path: path.into(),
+                    }),
+            )
             .await?;
 
         if !response.status().is_success() {
@@ -440,37 +478,30 @@ impl Client {
     pub async fn download_file_to(
         &self,
         id: &Uuid,
+        root: FmRoot,
         path: impl Into<String>,
         destination: impl Into<PathBuf>,
     ) -> Result<()> {
-        let response = self
-            .send(self.reqwest_client.get(format!(
-                "{}/game_servers/{}/files/download?path={}",
-                Self::BASE_URL,
-                id,
-                path.into()
-            )))
-            .await?;
-
-        if !response.status().is_success() {
-            bail!(format!("Failed to download file: {:?}", response));
-        }
-
-        let bytes = response.bytes().await?;
+        let bytes = self.download_file(id, root, path).await?;
         let mut file = File::create(destination.into()).await?;
         file.write_all(&bytes).await?;
 
         Ok(())
     }
 
-    pub async fn delete_file(&self, id: &Uuid, path: impl Into<String>) -> Result<()> {
+    pub async fn delete_file(
+        &self,
+        id: &Uuid,
+        root: FmRoot,
+        path: impl Into<String>,
+    ) -> Result<()> {
         self.send_unit(
-            self.reqwest_client.delete(format!(
-                "{}/game_servers/{}/files?path={}",
-                Self::BASE_URL,
-                id,
-                path.into()
-            )),
+            self.reqwest_client
+                .delete(format!("{}/game_servers/{}/files", Self::BASE_URL, id))
+                .query(&FilePathQuery {
+                    root,
+                    path: path.into(),
+                }),
             "failed to delete file",
         )
         .await

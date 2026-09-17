@@ -12,6 +12,7 @@ import type {
   DeleteMissionsResponse,
   EditInstanceRequest,
   FileListResponse,
+  FmRoot,
   GameServerLogsResponse,
   GetPauseServerResponse,
   GetResumeServerResponse,
@@ -356,9 +357,10 @@ export default class Client {
   public async listFiles(
     id: string,
     filePath: string,
+    root: FmRoot = "DcsSavedGames",
   ): Promise<FileListResponse> {
     return await this.requestJson<FileListResponse>(
-      this.buildUrl(`/game_servers/${id}/files`, { path: filePath }),
+      this.buildUrl(`/game_servers/${id}/files`, { root, path: filePath }),
       {
         method: "GET",
       },
@@ -368,9 +370,11 @@ export default class Client {
   public async createDirectory(
     id: string,
     directoryPath: string,
+    root: FmRoot = "DcsSavedGames",
   ): Promise<void> {
     await this.requestVoid(
       this.buildUrl(`/game_servers/${id}/files/directory`, {
+        root,
         path: directoryPath,
       }),
       {
@@ -384,9 +388,10 @@ export default class Client {
     filePath: string,
     file: BinaryInput,
     filename = "upload.bin",
+    root: FmRoot = "DcsSavedGames",
   ): Promise<void> {
     await this.requestVoid(
-      this.buildUrl(`/game_servers/${id}/files/upload`, { path: filePath }),
+      this.buildUrl(`/game_servers/${id}/files/upload`, { root, path: filePath }),
       {
         method: "POST",
         body: this.createFileForm(file, filename),
@@ -394,18 +399,26 @@ export default class Client {
     );
   }
 
-  public async downloadFile(id: string, filePath: string): Promise<Uint8Array> {
+  public async downloadFile(
+    id: string,
+    filePath: string,
+    root: FmRoot = "DcsSavedGames",
+  ): Promise<Uint8Array> {
     return await this.requestBytes(
-      this.buildUrl(`/game_servers/${id}/files/download`, { path: filePath }),
+      this.buildUrl(`/game_servers/${id}/files/download`, { root, path: filePath }),
       {
         method: "GET",
       },
     );
   }
 
-  public async deleteFile(id: string, filePath: string): Promise<void> {
+  public async deleteFile(
+    id: string,
+    filePath: string,
+    root: FmRoot = "DcsSavedGames",
+  ): Promise<void> {
     await this.requestVoid(
-      this.buildUrl(`/game_servers/${id}/files`, { path: filePath }),
+      this.buildUrl(`/game_servers/${id}/files`, { root, path: filePath }),
       {
         method: "DELETE",
       },

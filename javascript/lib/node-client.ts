@@ -1,6 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import * as path from "node:path";
 import Client from "./client.ts";
+import type { FmRoot } from "./types.ts";
 
 export type { BinaryInput, Fetch } from "./client.ts";
 
@@ -9,6 +10,7 @@ export default class NodeClient extends Client {
     id: string,
     destinationPath: string,
     localFilePath: string,
+    root: FmRoot = "DcsSavedGames",
   ): Promise<void> {
     const file = await readFile(localFilePath);
     await this.uploadFile(
@@ -16,6 +18,7 @@ export default class NodeClient extends Client {
       destinationPath,
       file,
       path.basename(localFilePath),
+      root,
     );
   }
 
@@ -23,8 +26,9 @@ export default class NodeClient extends Client {
     id: string,
     remotePath: string,
     destinationPath: string,
+    root: FmRoot = "DcsSavedGames",
   ): Promise<void> {
-    const content = await this.downloadFile(id, remotePath);
+    const content = await this.downloadFile(id, remotePath, root);
     await writeFile(destinationPath, content);
   }
 

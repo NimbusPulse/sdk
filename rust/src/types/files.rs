@@ -1,5 +1,18 @@
 use serde::{Deserialize, Serialize};
 
+#[derive(Debug, Default, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+pub enum FmRoot {
+    #[default]
+    DcsSavedGames,
+    AerosimicsAtcAbm,
+}
+
+#[derive(Debug, Serialize)]
+pub(crate) struct FilePathQuery {
+    pub root: FmRoot,
+    pub path: String,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct FileInfo {
     pub name: String,
@@ -17,6 +30,7 @@ pub struct FileListResponse {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct MoveFileRequest {
+    pub root: FmRoot,
     pub source: String,
     pub destination: String,
 }
