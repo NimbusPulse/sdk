@@ -273,6 +273,7 @@ export type InstanceStatus =
   | { InstallingBaseGame: { progress: number | null } }
   | { InstallingMods: { is_post_creation: boolean } }
   | "UninstallingMods"
+  | "UpdateMods"
   | { InstallingPost: { is_post_creation: boolean } }
   | "ServerStarted"
   | { ServerStopped: { was_error: boolean; reason: InstanceStoppedReason } }

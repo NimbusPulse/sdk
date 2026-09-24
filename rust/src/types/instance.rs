@@ -113,6 +113,7 @@ pub enum InstanceStatus {
         is_post_creation: bool,
     },
     UninstallingMods,
+    UpdateMods,
     InstallingPost {
         is_post_creation: bool,
     },
