@@ -32,6 +32,12 @@ export type AdvancedSettings = {
 
 export type ApiError = { message: string; code: string };
 
+export type AvailableMod = {
+  name: string;
+  api_name: string;
+  version: string;
+};
+
 export type BanPlayerRequest = {
   id: number;
   reason: string;

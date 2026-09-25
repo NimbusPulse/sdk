@@ -1,5 +1,6 @@
 import type {
   AddMissionsResponse,
+  AvailableMod,
   BanPlayerRequest,
   BanPlayerResponse,
   BillingType,
@@ -321,6 +322,13 @@ export default class Client {
     await this.requestVoid(this.buildUrl(`/game_servers/${id}/reactivate`), {
       method: "POST",
     });
+  }
+
+  public async getAvailableMods(): Promise<AvailableMod[]> {
+    return await this.requestJson<AvailableMod[]>(
+      this.buildUrl("/mods/available"),
+      { method: "GET" },
+    );
   }
 
   public async changeMods(

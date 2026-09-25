@@ -25,7 +25,7 @@ pub use types::instance::{
     UserResource,
 };
 pub use types::logs::{GameServerLogRow, GameServerLogsResponse, InstanceLogRequest};
-pub use types::mods::{ChangeModsRequest, ModConfigType};
+pub use types::mods::{AvailableMod, ChangeModsRequest, ModConfigType};
 pub use types::products::{
     ACE_TIER, CADET_TIER, COMMANDER_TIER, PRODUCTS, Product, STRATEGIST_TIER, VETERAN_TIER,
     WINGMAN_TIER, product_by_id,
@@ -324,6 +324,14 @@ impl Client {
             self.reqwest_client
                 .post(format!("{}/game_servers/{}/reactivate", Self::BASE_URL, id)),
             "failed to reactivate server",
+        )
+        .await
+    }
+
+    pub async fn get_available_mods(&self) -> Result<Vec<AvailableMod>> {
+        self.send_json(
+            self.reqwest_client
+                .get(format!("{}/mods/available", Self::BASE_URL)),
         )
         .await
     }
